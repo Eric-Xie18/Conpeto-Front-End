@@ -35,8 +35,12 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                textView.setText("Login Succeed \n" + loginResult.getAccessToken().getToken());
                 Log.d("token return is",loginResult.getAccessToken().getToken());
+                // todo 1: right now just skip authentication, assume it is already there, will have to incorporate it later on
+
+
+                // todo 2 : jump to PostLogin page, and using the add_user API
+
             }
 
             @Override
