@@ -44,7 +44,6 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList(EMAIL));
-        textView = (TextView) findViewById(R.id.text1);
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -111,10 +110,14 @@ public class LoginActivity extends AppCompatActivity {
                 // append the content in JSON format
                 StringBuilder body = new StringBuilder();
                 body.append("{\"user\":");
+                body.append("\"");
                 body.append(userID);
+                body.append("\"");
                 body.append(", ");
                 body.append("\"pass\":");
+                body.append("\"");
                 body.append(tempPW);
+                body.append("\"");
                 body.append("}");
 
                 String userInfo = body.toString();
@@ -152,17 +155,14 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(String result) {
-            Log.e("onPostExecute response:",result);
+            Log.e("onPost login response:",result);
             if(result.contains("Added")||result.contains("Exists")){
                 Intent myIntent = new Intent(LoginActivity.this, PostLogin.class);
+                myIntent.putExtra("user_ID", userID);
                  LoginActivity.this.startActivity(myIntent);
             }
             else
                 return;
         }
-    }
-
-    public String getUserID() {
-        return userID;
     }
 }

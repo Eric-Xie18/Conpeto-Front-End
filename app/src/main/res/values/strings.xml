@@ -3,4 +3,14 @@
     <string name="action_settings">Settings</string>
     <string name="facebook_app_id">477026109483594</string>
     <string name="fb_login_protocol_scheme">fb477026109483594</string>
+    <string name="create_a_group">Create a Group</string>
+    <string name="search_for_groups">Search for Groups</string>
+    <string name="view_my_groups">View my groups</string>
+    <string name="title_activity_create_group">CreateGroup</string>
+    <string name="submit">submit</string>
+    <string name="please_sepcify_information_of_group_you_want_to_create">Please Sepcify information of group you want to create</string>
+    <string name="group_activity_sports">Group Activity(Sports)</string>
+    <string name="group_name">Group Name</string>
+    <string name="cancel">Cancel</string>
+    <string name="create_your_group">Create your group</string>
 </resources>
