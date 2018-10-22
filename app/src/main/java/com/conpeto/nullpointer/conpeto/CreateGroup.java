@@ -41,6 +41,7 @@ public class CreateGroup extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent goBack = new Intent(CreateGroup.this,PostLogin.class);
+                goBack.putExtra("user_ID",userID);
                 CreateGroup.this.startActivity(goBack);
             }
         });

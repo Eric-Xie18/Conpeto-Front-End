@@ -23,12 +23,30 @@ public class PostLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_login);
 
-        final Button button = findViewById(R.id.create_Group);
-        button.setOnClickListener(new View.OnClickListener() {
+        final Button bCreateGroup = findViewById(R.id.create_Group);
+        final Button bViewGroup = findViewById(R.id.view_groups);
+        final Button bJoinGroup = findViewById(R.id.search_Group);
+        bCreateGroup.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent createGroup = new Intent(PostLogin.this,CreateGroup.class);
                 createGroup.putExtra("user_ID",getIntent().getStringExtra("user_ID"));
                 PostLogin.this.startActivity(createGroup);
+            }
+        });
+
+        bJoinGroup.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent searchGroup = new Intent(PostLogin.this,JoinGroup.class);
+                searchGroup.putExtra("user_ID",getIntent().getStringExtra("user_ID"));
+                PostLogin.this.startActivity(searchGroup);
+            }
+        });
+
+        bViewGroup.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent viewGroup = new Intent(PostLogin.this,ViewGroup.class);
+                viewGroup.putExtra("user_ID",getIntent().getStringExtra("user_ID"));
+                PostLogin.this.startActivity(viewGroup);
             }
         });
 
