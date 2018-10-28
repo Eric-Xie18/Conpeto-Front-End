@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+//import android.widget.TextView;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -31,7 +31,7 @@ import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
-    private LoginButton loginButton;
+   // private LoginButton loginButton;
     //TextView textView;
     private static final String EMAIL = "email";
     private String userID;
@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LoginButton loginButton;
         setContentView(R.layout.activity_login);
         callbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
