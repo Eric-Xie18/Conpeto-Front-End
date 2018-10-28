@@ -3,10 +3,10 @@ package com.conpeto.nullpointer.conpeto;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+//import android.support.design.widget.FloatingActionButton;
+//import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+//import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,9 +20,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+//import java.text.SimpleDateFormat;
+//import java.util.ArrayList;
+//import java.util.Date;
 
 public class JoinGroup extends AppCompatActivity {
 
@@ -51,7 +51,7 @@ public class JoinGroup extends AppCompatActivity {
                 System.out.println("group name is" + groupName);
 
 
-                if(groupName.equals("")){
+                if("".equals(groupName)){
                     Toast.makeText(JoinGroup.this, "You must specify a group name",
                             Toast.LENGTH_LONG).show();
                 }
@@ -136,7 +136,7 @@ public class JoinGroup extends AppCompatActivity {
         protected void onPostExecute(Boolean result) {
             // add toast message for added and not added
             Intent goBack = new Intent(JoinGroup.this,PostLogin.class);
-            if(result==false) {
+            if(!result) {
                 Toast.makeText(JoinGroup.this, "No such group or user was found!",
                         Toast.LENGTH_LONG).show();
             }

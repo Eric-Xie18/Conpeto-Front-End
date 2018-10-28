@@ -3,10 +3,10 @@ package com.conpeto.nullpointer.conpeto;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+//import android.support.design.widget.FloatingActionButton;
+//import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+//import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +17,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
+//import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -55,7 +55,7 @@ public class CreateGroup extends AppCompatActivity {
                 System.out.println("group name is" + name);
                 System.out.println("Activity name is"+ activity);
 
-                if(name.equals("")|| activity.equals("")){
+                if("".equals(name)|| "".equals(activity)){
                     Toast.makeText(CreateGroup.this, "You must specify either the group name or group activity before proceed",
                             Toast.LENGTH_LONG).show();
                 }
