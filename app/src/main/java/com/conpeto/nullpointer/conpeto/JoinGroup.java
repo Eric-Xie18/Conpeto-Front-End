@@ -69,17 +69,10 @@ public class JoinGroup extends AppCompatActivity {
     private class AddUserToGroup extends AsyncTask<Void, Integer, Boolean> {
         protected Boolean doInBackground(Void... params) {
             boolean success = false;
-            StringBuffer response = new StringBuffer();
+            String response = null;
             String urlString = "http://null-pointers.herokuapp.com/group";
-            try {
-                URL url = new URL(urlString);
-                HttpURLConnection client = (HttpURLConnection) url.openConnection();
-                System.out.println("After connection\n");
-                client.setRequestProperty("Content-Type", "application/json");
-                client.setRequestMethod("PUT");
-                client.setDoOutput(true);
-
-                // append the content in JSON format
+            String method = "PUT";
+            // append the content in JSON format
                 StringBuilder body = new StringBuilder();
                 body.append("{\"user\":");
                 body.append("\"");
@@ -91,39 +84,15 @@ public class JoinGroup extends AppCompatActivity {
                 body.append(groupName);
                 body.append("\"");
                 body.append("}");
-
                 String bodyInfo = body.toString();
-                System.out.println("Body is" + bodyInfo);
 
-                // Send put request
-                DataOutputStream wr = new DataOutputStream(client.getOutputStream());
-                System.out.println("before Write\n");
-                wr.writeBytes(bodyInfo);
-                wr.flush();
-                wr.close();
+                HttpClient httpClient = new HttpClient(urlString,method);
+                response = httpClient.sendRequest(bodyInfo);
 
-                int responseCode = client.getResponseCode();
-                System.out.println("\nSending 'PUT' request to URL : " + url);
-                System.out.println("Put body : " + bodyInfo);
-                System.out.println("Response Code : " + responseCode);
-
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(client.getInputStream()));
-                String inputLine;
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-                String responseContent = response.toString();
-                if (responseContent.contains("Added")||(responseContent.contains("Already"))) {
+                if (response.contains("Added")||(response.contains("Already"))) {
                     success = true;
                 }
-            } catch (MalformedURLException E) {
-                Log.e("URL", "The URL is not correct");
-            } catch (IOException E) {
-            }
+
 
             Log.e("Join group response:", response.toString());
             return success;

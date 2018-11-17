@@ -34,8 +34,7 @@ public class LoginActivity extends AppCompatActivity {
    // private LoginButton loginButton;
     //TextView textView;
     private static final String EMAIL = "email";
-    private String userID;
-    private String tempPW = "12345";
+    private String accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +47,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("token return is",loginResult.getAccessToken().getToken());
-                userID = loginResult.getAccessToken().getUserId();
-                AddUser addUser = new AddUser();
+                accessToken = loginResult.getAccessToken().getToken();
+                SigninUser addUser = new SigninUser();
                 addUser.execute();
             }
 
@@ -95,60 +93,40 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private class AddUser extends AsyncTask<Void, Integer, String> {
+    private class SigninUser extends AsyncTask<Void, Integer, String> {
         protected String doInBackground(Void...params) {
-            String urlString = "http://null-pointers.herokuapp.com/user";
-            StringBuffer response = new StringBuffer();
+            String urlString = "http://null-pointers.herokuapp.com/auth/facebook";
+            String method = "POST";
+            String responseContent = null;
+            // append the body in JSON format
             try {
-                Log.e("before connection","let's start");
-                URL url = new URL(urlString);
+                URL url;
+                url = new URL(urlString);
                 HttpURLConnection client = (HttpURLConnection) url.openConnection();
-                System.out.println("After connection\n");
-                client.setRequestProperty("Content-Type","application/json");
-                client.setRequestMethod("POST");
+                client.setRequestProperty("Content-Type", "application/json");
+                client.setRequestProperty("access_token",accessToken);
+                client.setRequestMethod(method);
                 client.setDoOutput(true);
-
-                // append the content in JSON format
-                StringBuilder body = new StringBuilder();
-                body.append("{\"user\":");
-                body.append("\"");
-                body.append(userID);
-                body.append("\"");
-                body.append(", ");
-                body.append("\"pass\":");
-                body.append("\"");
-                body.append(tempPW);
-                body.append("\"");
-                body.append("}");
-
-                String userInfo = body.toString();
-                Log.d("Body is",userInfo);
-
-                // Send post request
-                DataOutputStream wr = new DataOutputStream(client.getOutputStream());
-                System.out.println("before Write\n");
-                wr.writeBytes(userInfo);
-                wr.flush();
-                wr.close();
-
                 int responseCode = client.getResponseCode();
-                System.out.println("\nSending 'POST' request to URL : " + url);
-                System.out.println("Post body : " + userInfo);
+                System.out.println("\nSending " + method + " request to URL : " + url);
                 System.out.println("Response Code : " + responseCode);
 
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(client.getInputStream()));
                 String inputLine;
 
+                StringBuffer response = new StringBuffer();
                 while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
                 }
                 in.close();
+                responseContent = response.toString();
+                System.out.println("Server response is: " + responseContent);
+                responseContent = Integer.toString(responseCode);
 
-            } catch(MalformedURLException E){Log.e( "URL","The URL is not correct");}
-            catch(IOException E){}
-
-            return response.toString();
+            } catch (IOException E) {
+            }
+            return responseContent;
         }
 
         protected void onProgressUpdate(Integer...parms) {
@@ -156,14 +134,17 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(String result) {
-            Log.e("onPost login response:",result);
-            if(result.contains("Added")||result.contains("Exists")){
+        //    Log.e("onPost login response: ",result);
+            if(result.contains("200")){
                 Intent myIntent = new Intent(LoginActivity.this, PostLogin.class);
-                myIntent.putExtra("user_ID", userID);
+                myIntent.putExtra("user_ID",accessToken );
                  LoginActivity.this.startActivity(myIntent);
             }
-            else
+            else{
+                Log.d("something wrong happens","User cannot be added");
                 return;
+            }
+
         }
     }
 }

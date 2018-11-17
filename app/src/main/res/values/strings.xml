@@ -19,4 +19,5 @@
     <string name="title_activity_join_group">JoinGroup</string>
     <string name="enter_the_name_of_group_you_want_to_join">Enter the name of group you want to join</string>
     <string name="search_for_and_join_a_group">Search for and join a group</string>
+    <string name="title_activity_demo_activity">demo_activity</string>
 </resources>
