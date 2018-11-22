@@ -4,6 +4,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -32,17 +39,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".PostLogin" />
-
         <activity
             android:name=".LoginActivity"
             android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-
         <activity
             android:name=".CreateGroup"
             android:label="@string/title_activity_create_group"
@@ -55,6 +60,15 @@
             android:name=".JoinGroup"
             android:label="@string/title_activity_join_group"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAOXSgOiad4uqN_E0a_YZyt-9jOZK5SFlU" />
+
+        <activity
+            android:name=".SelectAndSelfMap"
+            android:label="@string/title_activity_select_and_self_map"
+            android:exported="true"></activity>
     </application>
 
 </manifest>

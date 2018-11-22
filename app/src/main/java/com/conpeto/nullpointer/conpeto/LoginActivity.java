@@ -31,10 +31,9 @@ import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
-   // private LoginButton loginButton;
-    //TextView textView;
     private static final String EMAIL = "email";
     private String accessToken;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +47,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 accessToken = loginResult.getAccessToken().getToken();
+                userID = loginResult.getAccessToken().getUserId();
+                // Todo: need an intermediate login step to prvent broken stuff
+                // Todo: need to provide Facebook token as well
                 SigninUser addUser = new SigninUser();
                 addUser.execute();
             }
@@ -137,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
         //    Log.e("onPost login response: ",result);
             if(result.contains("200")){
                 Intent myIntent = new Intent(LoginActivity.this, PostLogin.class);
-                myIntent.putExtra("user_ID",accessToken );
+                myIntent.putExtra("user_ID",userID );
                  LoginActivity.this.startActivity(myIntent);
             }
             else{

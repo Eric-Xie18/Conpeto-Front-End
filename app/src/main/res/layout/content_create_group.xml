@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="226dp"
+        android:layout_marginBottom="155dp"
         android:text="@string/submit" />
 
     <Button
@@ -54,8 +54,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="165dp"
+        android:layout_marginBottom="97dp"
         android:text="@string/cancel" />
+    <Button
+        android:id="@+id/pick_place"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_Cancel"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-88dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginBottom="30dp"
+        android:text="Pick a location" />
 
     <TextView
         android:id="@+id/group_Text"
@@ -68,5 +80,7 @@
         android:layout_marginLeft="129dp"
         android:layout_marginTop="89dp"
         android:text="@string/create_your_group" />
+
+
 
 </RelativeLayout>

@@ -30,4 +30,17 @@ tools:context="com.conpeto.nullpointer.conpeto.PostLogin">
         android:layout_height="wrap_content"
         android:text="@string/view_my_groups" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notify me when groups within this range are created" />
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
+
 </LinearLayout>
