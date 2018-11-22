@@ -43,4 +43,9 @@ tools:context="com.conpeto.nullpointer.conpeto.PostLogin">
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

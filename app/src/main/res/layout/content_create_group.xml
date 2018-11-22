@@ -6,14 +6,30 @@
     android:layout_height="match_parent"
     tools:context="com.conpeto.nullpointer.conpeto.CreateGroup">
 
+    <EditText
+        android:id="@+id/group_details"
+        android:layout_width="396dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/enter_Prompt"
+        android:layout_alignStart="@+id/enter_Prompt"
+        android:layout_alignLeft="@+id/enter_Prompt"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="47dp"
+        android:ems="10"
+        android:hint="Group Details"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        tools:targetApi="o" />
+
     <TextView
         android:id="@+id/enter_Prompt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="150dp"
-        android:text="@string/please_sepcify_information_of_group_you_want_to_create"
-        android:layout_marginStart="50dp" />
+        android:layout_marginTop="100dp"
+        android:text="@string/please_sepcify_information_of_group_you_want_to_create" />
 
     <EditText
         android:id="@+id/group_Name"
@@ -27,17 +43,14 @@
         android:layout_alignStart="@+id/enter_Prompt"
         android:importantForAutofill="no" tools:targetApi="o" />
 
-    <EditText
-        android:id="@+id/group_Activity"
-        android:layout_alignLeft="@+id/enter_Prompt"
-        android:layout_below="@+id/group_Name"
-        android:layout_width="396dp"
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="@string/group_activity_sports"
-        android:importantForAutofill="no" tools:targetApi="o"
-        android:layout_alignStart="@+id/enter_Prompt" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="238dp"
+        android:text="Current Location is unchosen" />
 
     <Button
         android:id="@+id/button_Submit"
@@ -76,11 +89,31 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="129dp"
-        android:layout_marginLeft="129dp"
-        android:layout_marginTop="89dp"
+        android:layout_marginStart="137dp"
+        android:layout_marginLeft="137dp"
+        android:layout_marginTop="20dp"
         android:text="@string/create_your_group" />
 
+    <Spinner
+        android:id="@+id/ddCategory"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="21dp"
+        android:layout_marginTop="236dp"
+        android:layout_toRightOf="@+id/textView5"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/enter_Prompt"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="254dp"
+        android:text="Group Category" />
 
 
 </RelativeLayout>
