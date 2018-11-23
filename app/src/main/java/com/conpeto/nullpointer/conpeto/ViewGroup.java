@@ -1,19 +1,19 @@
 package com.conpeto.nullpointer.conpeto;
-
+import java.util.ArrayList;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-//import android.support.design.widget.FloatingActionButton;
-//import android.support.design.widget.Snackbar;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-//import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
-//import java.io.DataOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -22,7 +22,7 @@ import java.net.URL;
 
 public class ViewGroup extends AppCompatActivity {
     private String userID;
-    private String thisUser = "102000147485873";
+    //private String thisUser = "102000147485873";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +33,7 @@ public class ViewGroup extends AppCompatActivity {
         goBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent viewGroup = new Intent(ViewGroup.this,PostLogin.class);
-               // viewGroup.putExtra("user_ID",userID);
+                viewGroup.putExtra("user_ID",userID);
                 ViewGroup.this.startActivity(viewGroup);
             }
         });
@@ -46,8 +46,8 @@ public class ViewGroup extends AppCompatActivity {
     private class CheckGroup extends AsyncTask<Void, Integer, String> {
         protected String doInBackground(Void... params) {
             StringBuilder urlBuilder = new StringBuilder("http://null-pointers.herokuapp.com/group");
-            urlBuilder.append("?user=");
-            urlBuilder.append(thisUser);
+            urlBuilder.append("?id=");
+            urlBuilder.append(userID);
             String urlString = urlBuilder.toString();
             StringBuffer response = new StringBuffer();
             System.out.println("The URL is" + urlString);
@@ -87,7 +87,68 @@ public class ViewGroup extends AppCompatActivity {
         }
 
         protected void onPostExecute(String result) {
+
             TextView groupList = findViewById(R.id.group_List);
+
+            //Indexes used for result substring calculation
+            int index = 0,i;
+
+            //Strings to store group attribute values
+            String id = "",name = "",cat = "",dets = "",users = "",Lat = "",Long = "";
+
+            //Array List for all groups
+            ArrayList<Group> groups = new ArrayList<>();
+
+            //Group attribute identifiers
+            String idTag = "_id";
+            String nameTag = "group";
+            String detsTag = "group_details";
+            String userTag = "user_ids";
+            String catTag = "group_category";
+            String latTag = "group_latitude";
+            String longTag = "group_longitude";
+            while(index < result.length()){
+             //Extract group id
+                i = result.indexOf(idTag,index);
+                i = i + 6;
+                index = result.indexOf("\",",i+1);
+                id = result.substring(i,index);
+             //Extract group name
+                i = result.indexOf(nameTag,index);
+                i = i + 8;
+                index = result.indexOf("\",",i+1);
+                name = result.substring(i,index);
+             //Extract group details
+                i = result.indexOf(detsTag,index);
+                i = i +16;
+                index = result.indexOf("\",",i+1);
+                dets = result.substring(i,index);
+             //Extract user IDs
+                i = result.indexOf(userTag,index);
+                i = i + 10;
+                index = result.indexOf("],\"",i+1);
+                users = result.substring(i,index+1);
+            //Extract category
+                i = result.indexOf(catTag,index);
+                i = i + 17;
+                index = result.indexOf("\",",i+1);
+                cat = result.substring(i,index);
+             //Extract lat
+                i = result.indexOf(latTag,index);
+                i = i + 16;
+                index = result.indexOf(",",i+1);
+                Lat = result.substring(i,index-1);
+            //Extract longitude
+                i = result.indexOf(longTag,index);
+                i = i + 17;
+                index = result.indexOf("}",i+1);
+                Long = result.substring(i,index);
+
+                index = index + 2;
+                groups.add(new Group(id,name,cat,dets,users,Lat,Long));
+                //System.out.println("\n" + id +" "+ name +" " + cat +" " + dets + " " + users + " " + Lat + " and " + Long);
+            }
+
             groupList.setText(result);
         }
     }
