@@ -50,11 +50,10 @@ tools:context="com.conpeto.nullpointer.conpeto.PostLogin">
 
     <Button
         android:id="@+id/log_out_button"
-        android:layout_width="214dp"
+        android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_marginVertical="200dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="150dp"
+        android:layout_marginVertical="230dp"
+        android:layout_marginStart="280dp"
         android:text="@string/log_out" />
 
 </LinearLayout>

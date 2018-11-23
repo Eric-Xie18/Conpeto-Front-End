@@ -1,34 +1,45 @@
 package com.conpeto.nullpointer.conpeto;
 
 import android.content.Intent;
-//import android.os.AsyncTask;
+
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-//import android.util.Log;
+
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
-/*import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;*/
+import java.util.Arrays;
+
+import static com.facebook.login.LoginBehavior.WEB_VIEW_ONLY;
 
 public class PostLogin extends AppCompatActivity  {
+
 private static String radius = "5";
+;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +50,8 @@ private static String radius = "5";
         final Button bViewGroup = findViewById(R.id.view_groups);
         final Button bJoinGroup = findViewById(R.id.search_Group);
         final TextView radiusDislay = findViewById(R.id.textView2);
+        Button bLogOut = findViewById(R.id.log_out_button);
+
 
         //get the spinner from the xml.
         Spinner dropdown = findViewById(R.id.spinner1);
@@ -57,35 +70,35 @@ private static String radius = "5";
                                                        case 0:
                                                            // Whatever you want to happen when the first item gets selected
                                                            radius = radius;
-                                                           radiusDislay.setText("The current filter distance is" + radius);
+                                                           radiusDislay.setText("The current filter distance is" + radius+ " KM");
                                                            break;
                                                        case 1:
                                                            // Whatever you want to happen when the second item gets selected
                                                            radius = "5";
-                                                           radiusDislay.setText("The current filter distance is" + radius);
+                                                           radiusDislay.setText("The current filter distance is" + radius + " KM");
                                                            break;
                                                        case 2:
                                                            // Whatever you want to happen when the thrid item gets selected
                                                            radius = "10";
-                                                           radiusDislay.setText("The current filter distance is" + radius);
+                                                           radiusDislay.setText("The current filter distance is" + radius + " KM");
                                                            break;
 
                                                        case 3:
                                                            // Whatever you want to happen when the thrid item gets selected
                                                            radius = "15";
-                                                           radiusDislay.setText("The current filter distance is" + radius);
+                                                           radiusDislay.setText("The current filter distance is" + radius + " KM");
                                                            break;
 
                                                        case 4:
                                                            // Whatever you want to happen when the thrid item gets selected
                                                            radius = "30";
-                                                           radiusDislay.setText("The current filter distance is" + radius);
+                                                           radiusDislay.setText("The current filter distance is" + radius + " KM");
                                                            break;
 
                                                            case 5:
                                                            // Whatever you want to happen when the thrid item gets selected
                                                            radius = "Any";
-                                                               radiusDislay.setText("The geo filter distance is turned off");
+                                                               radiusDislay.setText("The geo filter is turned off");
                                                            break;
 
                                                    }
@@ -138,6 +151,16 @@ private static String radius = "5";
             }
         });
 
+        bLogOut.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                LoginManager.getInstance().logOut();
+                Intent login = new Intent(PostLogin.this,LoginActivity.class);
+                PostLogin.this.startActivity(login);
+            }
+        });
+
+
     }
       @Override
      protected void onResume(){
@@ -145,6 +168,11 @@ private static String radius = "5";
         System.out.println("In post login on Resume The radius is" + radius);
 
      }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 
     public static String gerRadius(){
         return radius;

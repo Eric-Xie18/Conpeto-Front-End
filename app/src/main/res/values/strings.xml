@@ -21,4 +21,6 @@
     <string name="search_for_and_join_a_group">Search for and join a group</string>
     <string name="title_activity_demo_activity">demo_activity</string>
     <string name="title_activity_select_and_self_map">Map</string>
+    <string name="notify_me_when_groups_within_this_range_are_created">Notify me when groups within this range are created</string>
+    <string name="log_out">Log Out</string>
 </resources>
