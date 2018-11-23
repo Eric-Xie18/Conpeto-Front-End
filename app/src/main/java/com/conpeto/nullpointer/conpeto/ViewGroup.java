@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -19,21 +21,35 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import android.widget.Toast;
+import android.app.Activity;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
 
 public class ViewGroup extends AppCompatActivity {
     private String userID;
+    private ListView lv;
+    ArrayAdapter<String> adapter;
+
     //private String thisUser = "102000147485873";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_group);
+
         userID = getIntent().getStringExtra("user_ID");
 
         final Button goBack = findViewById(R.id.go_Back);
         goBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent viewGroup = new Intent(ViewGroup.this,PostLogin.class);
-                viewGroup.putExtra("user_ID",userID);
+                Intent viewGroup = new Intent(ViewGroup.this, PostLogin.class);
+                viewGroup.putExtra("user_ID", userID);
                 ViewGroup.this.startActivity(viewGroup);
             }
         });
@@ -44,6 +60,7 @@ public class ViewGroup extends AppCompatActivity {
 
 
     private class CheckGroup extends AsyncTask<Void, Integer, String> {
+
         protected String doInBackground(Void... params) {
             StringBuilder urlBuilder = new StringBuilder("http://null-pointers.herokuapp.com/group");
             urlBuilder.append("?id=");
@@ -77,7 +94,7 @@ public class ViewGroup extends AppCompatActivity {
             } catch (IOException E) {
             }
 
-            Log.e("group response is:",response.toString() );
+            Log.e("group response is:", response.toString());
             return response.toString();
         }
 
@@ -88,17 +105,15 @@ public class ViewGroup extends AppCompatActivity {
 
         protected void onPostExecute(String result) {
 
-            TextView groupList = findViewById(R.id.group_List);
-
             //Indexes used for result substring calculation
-            int index = 0,i;
+            int index = 0, i;
 
             //Strings to store group attribute values
-            String id = "",name = "",cat = "",dets = "",users = "",Lat = "",Long = "";
+            String id = "", name = "", cat = "", dets = "", users = "", Lat = "", Long = "";
 
             //Array List for all groups
             ArrayList<Group> groups = new ArrayList<>();
-
+            ArrayList<String> GroupNames = new ArrayList<>();
             //Group attribute identifiers
             String idTag = "_id";
             String nameTag = "group";
@@ -107,49 +122,63 @@ public class ViewGroup extends AppCompatActivity {
             String catTag = "group_category";
             String latTag = "group_latitude";
             String longTag = "group_longitude";
-            while(index < result.length()){
-             //Extract group id
-                i = result.indexOf(idTag,index);
+            while (index < result.length()) {
+                //Extract group id
+                i = result.indexOf(idTag, index);
                 i = i + 6;
-                index = result.indexOf("\",",i+1);
-                id = result.substring(i,index);
-             //Extract group name
-                i = result.indexOf(nameTag,index);
+                index = result.indexOf("\",", i + 1);
+                id = result.substring(i, index);
+                //Extract group name
+                i = result.indexOf(nameTag, index);
                 i = i + 8;
-                index = result.indexOf("\",",i+1);
-                name = result.substring(i,index);
-             //Extract group details
-                i = result.indexOf(detsTag,index);
-                i = i +16;
-                index = result.indexOf("\",",i+1);
-                dets = result.substring(i,index);
-             //Extract user IDs
-                i = result.indexOf(userTag,index);
-                i = i + 10;
-                index = result.indexOf("],\"",i+1);
-                users = result.substring(i,index+1);
-            //Extract category
-                i = result.indexOf(catTag,index);
-                i = i + 17;
-                index = result.indexOf("\",",i+1);
-                cat = result.substring(i,index);
-             //Extract lat
-                i = result.indexOf(latTag,index);
+                index = result.indexOf("\",", i + 1);
+                name = result.substring(i, index);
+                //Extract group details
+                i = result.indexOf(detsTag, index);
                 i = i + 16;
-                index = result.indexOf(",",i+1);
-                Lat = result.substring(i,index-1);
-            //Extract longitude
-                i = result.indexOf(longTag,index);
+                index = result.indexOf("\",", i + 1);
+                dets = result.substring(i, index);
+                //Extract user IDs
+                i = result.indexOf(userTag, index);
+                i = i + 10;
+                index = result.indexOf("],\"", i + 1);
+                users = result.substring(i, index + 1);
+                //Extract category
+                i = result.indexOf(catTag, index);
                 i = i + 17;
-                index = result.indexOf("}",i+1);
-                Long = result.substring(i,index);
+                index = result.indexOf("\",", i + 1);
+                cat = result.substring(i, index);
+                //Extract lat
+                i = result.indexOf(latTag, index);
+                i = i + 16;
+                index = result.indexOf(",", i + 1);
+                Lat = result.substring(i, index - 1);
+                //Extract longitude
+                i = result.indexOf(longTag, index);
+                i = i + 17;
+                index = result.indexOf("}", i + 1);
+                Long = result.substring(i, index);
 
                 index = index + 2;
-                groups.add(new Group(id,name,cat,dets,users,Lat,Long));
+                groups.add(new Group(id, name, cat, dets, users, Lat, Long));
                 //System.out.println("\n" + id +" "+ name +" " + cat +" " + dets + " " + users + " " + Lat + " and " + Long);
             }
+            final Group[] Groups = groups.toArray(new Group[groups.size()]);
+            for (int j = 0; j < groups.size(); j++) {
+                GroupNames.add(Groups[j].getName());
+            }
+            lv = (ListView) findViewById(R.id.list_view);
+            adapter = new ArrayAdapter<String>(ViewGroup.this, R.layout.list_item, R.id.group_name, GroupNames);
+            lv.setAdapter(adapter);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            groupList.setText(result);
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //toast added for debugging
+                    Toast.makeText(ViewGroup.this,"Pressed " + Groups[position].getName(),Toast.LENGTH_SHORT).show();
+                    
+                }
+            });
         }
     }
 }

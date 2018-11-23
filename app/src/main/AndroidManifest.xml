@@ -67,8 +67,12 @@
 
         <activity
             android:name=".SelectAndSelfMap"
-            android:label="@string/title_activity_select_and_self_map"
-            android:exported="true"></activity>
+            android:exported="true"
+            android:label="@string/title_activity_select_and_self_map" />
+        <activity
+            android:name=".ShowGroupInfo"
+            android:label="@string/title_activity_show_group_info"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

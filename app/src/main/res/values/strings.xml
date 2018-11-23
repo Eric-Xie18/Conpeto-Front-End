@@ -21,4 +21,5 @@
     <string name="search_for_and_join_a_group">Search for and join a group</string>
     <string name="title_activity_demo_activity">demo_activity</string>
     <string name="title_activity_select_and_self_map">Map</string>
+    <string name="title_activity_show_group_info">ShowGroupInfo</string>
 </resources>
