@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 //import android.widget.TextView;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -64,6 +65,15 @@ public class LoginActivity extends AppCompatActivity {
                 // need to add more if needed
             }
         });
+
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+
+        if(isLoggedIn) {
+            Intent myIntent = new Intent(LoginActivity.this, PostLogin.class);
+            myIntent.putExtra("user_ID", AccessToken.getCurrentAccessToken().getUserId());
+            LoginActivity.this.startActivity(myIntent);
+        }
     }
 
     @Override
@@ -71,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

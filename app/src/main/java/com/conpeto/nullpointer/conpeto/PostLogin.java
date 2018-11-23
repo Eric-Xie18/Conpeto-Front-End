@@ -2,15 +2,22 @@ package com.conpeto.nullpointer.conpeto;
 
 import android.content.Intent;
 //import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 //import android.util.Log;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 /*import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -91,6 +98,21 @@ private static String radius = "5";
 
 
                                            });
+
+      FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if (!task.isSuccessful()) {
+                    Log.w("Firebase instance", "getInstanceId failed", task.getException());
+                    return;
+                }
+
+                // Get new Instance ID token
+                String token = task.getResult().getToken();
+                System.out.println("Firebase Token is " +token);
+
+            }
+        });
 
         bCreateGroup.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
