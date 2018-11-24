@@ -13,5 +13,13 @@
         android:padding="10dip"
         android:textSize="16dip"
         android:textStyle="bold"/>
+    <Button
+        android:id="@+id/report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:text="REPORT" />
 
 </LinearLayout>

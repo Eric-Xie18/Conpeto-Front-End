@@ -94,9 +94,16 @@ public class ShowGroupInfo extends AppCompatActivity {
         protected void onPostExecute(String result){
 
                 ArrayList<String> userNames = new ArrayList<>();
-                int start =0,end =0;
-                userNames.add(result);
-               // for(int index = 0; index<result.length(),)
+                int start=0,end=0,index=0;
+                System.out.println("eeks" + result.length());
+                while(true){
+                    start = result.indexOf("user",index);
+                    end = result.indexOf("email",start+7);
+                    if(start == -1 || end == -1)
+                        break;
+                    userNames.add(result.substring(start + 7, end - 3));
+                    index = end++;
+                }
                 lv = (ListView) findViewById(R.id.list_view);
                 adapter = new ArrayAdapter<String>(ShowGroupInfo.this, R.layout.list_item, R.id.name,userNames);
                 lv.setAdapter(adapter);
