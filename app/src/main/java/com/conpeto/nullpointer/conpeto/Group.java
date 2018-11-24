@@ -30,7 +30,7 @@ public class Group {
         this.Long = error;
     }
 
-    public String getGroupID() {
+    public String getID() {
         return groupID;
     }
 

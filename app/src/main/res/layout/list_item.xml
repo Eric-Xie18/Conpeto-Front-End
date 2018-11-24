@@ -7,7 +7,7 @@
     <!-- Single ListItem -->
 
     <!-- Product Name -->
-    <TextView android:id="@+id/group_name"
+    <TextView android:id="@+id/name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="10dip"

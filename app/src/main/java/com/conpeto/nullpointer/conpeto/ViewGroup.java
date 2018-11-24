@@ -3,33 +3,19 @@ import java.util.ArrayList;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import android.widget.Toast;
-import android.app.Activity;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 
 public class ViewGroup extends AppCompatActivity {
@@ -37,7 +23,6 @@ public class ViewGroup extends AppCompatActivity {
     private ListView lv;
     ArrayAdapter<String> adapter;
 
-    //private String thisUser = "102000147485873";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,14 +146,14 @@ public class ViewGroup extends AppCompatActivity {
 
                 index = index + 2;
                 groups.add(new Group(id, name, cat, dets, users, Lat, Long));
-                //System.out.println("\n" + id +" "+ name +" " + cat +" " + dets + " " + users + " " + Lat + " and " + Long);
+
             }
             final Group[] Groups = groups.toArray(new Group[groups.size()]);
             for (int j = 0; j < groups.size(); j++) {
                 GroupNames.add(Groups[j].getName());
             }
             lv = (ListView) findViewById(R.id.list_view);
-            adapter = new ArrayAdapter<String>(ViewGroup.this, R.layout.list_item, R.id.group_name, GroupNames);
+            adapter = new ArrayAdapter<String>(ViewGroup.this, R.layout.list_item, R.id.name, GroupNames);
             lv.setAdapter(adapter);
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -176,7 +161,16 @@ public class ViewGroup extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     //toast added for debugging
                     Toast.makeText(ViewGroup.this,"Pressed " + Groups[position].getName(),Toast.LENGTH_SHORT).show();
-                    
+                    Intent next = new Intent(ViewGroup.this, ShowGroupInfo.class);
+                    next.putExtra("name",Groups[position].getName());
+                    next.putExtra("groupID",Groups[position].getID());
+                    next.putExtra("category",Groups[position].getCategory());
+                    next.putExtra("details",Groups[position].getDetails());
+                    next.putExtra("userIDs",Groups[position].getUserIDs());
+                    next.putExtra("Lat",Groups[position].getLat());
+                    next.putExtra("Long",Groups[position].getLong());
+                    next.putExtra("user_ID",userID);
+                    ViewGroup.this.startActivity(next);
                 }
             });
         }
