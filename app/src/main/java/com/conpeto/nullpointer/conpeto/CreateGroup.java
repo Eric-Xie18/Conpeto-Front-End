@@ -210,15 +210,6 @@ public class CreateGroup extends AppCompatActivity {
                 client.setRequestMethod("POST");
                 client.setDoOutput(true);
 
-                // append the content in JSON format
-                // user_id
-                // group_name
-                // group_Details
-                // group_Category
-                // “group_latitude”:”123”, “group_longitude”:”123”
-                // {“id”:”12345”, “group_name”:”new_group”, “group_details”:
-                //“new_group_details”, “group_category”: “Sport”, “group_latitude”:”123”, “group_longitude”:”123”}
-
                 StringBuilder body = new StringBuilder();
                 body.append("{\"id\":");
                 body.append("\"");

@@ -71,7 +71,11 @@
             </intent-filter>
         </service>
 
+        <service android:name=".Service.LocationService"
+                  android:enabled="true" />
+
         <activity
+
             android:name=".SelectAndSelfMap"
             android:label="@string/title_activity_select_and_self_map"
             android:exported="true"></activity>

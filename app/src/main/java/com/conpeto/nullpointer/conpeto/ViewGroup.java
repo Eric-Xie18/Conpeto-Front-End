@@ -22,7 +22,6 @@ import java.net.URL;
 
 public class ViewGroup extends AppCompatActivity {
     private String userID;
-    private String thisUser = "102000147485873";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +46,7 @@ public class ViewGroup extends AppCompatActivity {
         protected String doInBackground(Void... params) {
             StringBuilder urlBuilder = new StringBuilder("http://null-pointers.herokuapp.com/group");
             urlBuilder.append("?user=");
-            urlBuilder.append(thisUser);
+            urlBuilder.append(userID);
             String urlString = urlBuilder.toString();
             StringBuffer response = new StringBuffer();
             System.out.println("The URL is" + urlString);

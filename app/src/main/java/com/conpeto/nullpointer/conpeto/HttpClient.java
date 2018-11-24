@@ -12,7 +12,7 @@ import java.net.URL;
 public class HttpClient {
     private URL url = null;
     private String method = null;
-
+    private String responseCode = null;
     HttpClient(String url, String method){
         try {
               this.url = new URL(url);
@@ -29,6 +29,7 @@ public class HttpClient {
             try {
                 HttpURLConnection client = (HttpURLConnection) url.openConnection();
                 int responseCode = client.getResponseCode();
+                this.responseCode = Integer.toString(responseCode);
                 System.out.println("\nSending " + method + " request to URL : " + url);
                 System.out.println("Response Code : " + responseCode);
 
@@ -47,7 +48,7 @@ public class HttpClient {
             } catch (IOException E) { }
         }
 
-        else{
+        else if ("POST".equals(method)||"PUT".equals(method)) {
             try {
                 HttpURLConnection client = (HttpURLConnection) url.openConnection();
                 client.setRequestProperty("Content-Type", "application/json");
@@ -61,6 +62,7 @@ public class HttpClient {
                 wr.close();
 
                 int responseCode = client.getResponseCode();
+                this.responseCode = Integer.toString(responseCode);
                 System.out.println("\nSending " + method + " request to URL : " + url);
                 System.out.println("Body : " + body);
                 System.out.println("Response Code : " + responseCode);
@@ -79,9 +81,36 @@ public class HttpClient {
             } catch (IOException E) {
             }
         }
+            else{
+                try {
+                    HttpURLConnection client = (HttpURLConnection) url.openConnection();
+                    client.setRequestMethod(method);
+                    int responseCode = client.getResponseCode();
+                    this.responseCode = Integer.toString(responseCode);
+                    System.out.println("\nSending " + method + " request to URL : " + url);
+                    System.out.println("Response Code : " + responseCode);
+
+                    BufferedReader in = new BufferedReader(
+                            new InputStreamReader(client.getInputStream()));
+                    String inputLine;
+
+                    StringBuffer response = new StringBuffer();
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    in.close();
+
+                    responseContent = response.toString();
+
+                } catch (IOException E) { }
+            }
+
         System.out.println("Server response is: " + responseContent);
       return responseContent;
     }
 
+    String getResponseCode(){
+        return responseCode;
+    }
 
 }

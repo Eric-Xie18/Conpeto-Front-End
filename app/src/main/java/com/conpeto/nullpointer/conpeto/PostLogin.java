@@ -1,67 +1,57 @@
 package com.conpeto.nullpointer.conpeto;
 
-import android.content.Intent;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
-import com.facebook.Profile;
+import com.conpeto.nullpointer.conpeto.Service.LocationService;
+import com.conpeto.nullpointer.conpeto.Service.MyFirebaseMessagingService;
 import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-
-import java.util.Arrays;
-
-import static com.facebook.login.LoginBehavior.WEB_VIEW_ONLY;
+;import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class PostLogin extends AppCompatActivity  {
 
 private static String radius = "5";
-;
+private String FCMKey = null;
+private String userID = null;
+private boolean getKey = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_login);
-
         final Button bCreateGroup = findViewById(R.id.create_Group);
         final Button bViewGroup = findViewById(R.id.view_groups);
         final Button bJoinGroup = findViewById(R.id.search_Group);
         final TextView radiusDislay = findViewById(R.id.textView2);
         Button bLogOut = findViewById(R.id.log_out_button);
-
-
-        //get the spinner from the xml.
+        userID = getIntent().getStringExtra("user_ID");
         Spinner dropdown = findViewById(R.id.spinner1);
-//create a list of items for the spinner.
         String[] items = new String[]{"Last Saved Setting", "5 KM", "10 KM", "15 KM","30 KM","Any"};
-//create an adapter to describe how the items are displayed, adapters are used in several places in android.
-//There are multiple variations of this, but this is the basic variant.
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-//set the spinners adapter to the previously created one.
         dropdown.setAdapter(adapter);
+
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                                @Override
                                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -103,8 +93,7 @@ private static String radius = "5";
 
                                                    }
                                                };
-
-            @Override
+                                               @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                           radius = radius;
             };
@@ -119,13 +108,13 @@ private static String radius = "5";
                     Log.w("Firebase instance", "getInstanceId failed", task.getException());
                     return;
                 }
-
                 // Get new Instance ID token
                 String token = task.getResult().getToken();
                 System.out.println("Firebase Token is " +token);
+                FCMKey = token;
+                getKey = true;
 
-            }
-        });
+            }});
 
         bCreateGroup.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -157,17 +146,21 @@ private static String radius = "5";
                 LoginManager.getInstance().logOut();
                 Intent login = new Intent(PostLogin.this,LoginActivity.class);
                 PostLogin.this.startActivity(login);
+                finish();
             }
         });
 
+        Intent serviceIntent = new Intent(this, LocationService.class);
+        startService(serviceIntent);
+        AddFCMKey addFCMKey = new AddFCMKey();
+        addFCMKey.execute();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
 
     }
-      @Override
-     protected void onResume(){
-        super.onResume();
-        System.out.println("In post login on Resume The radius is" + radius);
 
-     }
 
     @Override
     public void onBackPressed() {
@@ -181,5 +174,90 @@ private static String radius = "5";
      public static void modifyRadius(String newRadius){
         radius = newRadius;
         }
+
+    private class AddFCMKey extends AsyncTask<Void, Integer, Integer> {
+        protected Integer doInBackground(Void...params) {
+              while(!getKey){
+            }
+
+            String urlString = "http://null-pointers.herokuapp.com/user";
+            StringBuffer response = new StringBuffer();
+            int responseCode = 400;
+            try {
+                URL url = new URL(urlString);
+                HttpURLConnection client = (HttpURLConnection) url.openConnection();
+                client.setRequestMethod("PUT");
+                client.setRequestProperty("Content-Type", "application/json");
+                client.setDoOutput(true);
+
+                StringBuilder body = new StringBuilder();
+                body.append("{\"id\":");
+                body.append("\"");
+                body.append(userID);
+                body.append("\"");
+                body.append(", ");
+                body.append("\"fcmKey\":");
+                body.append("\"");
+                body.append(FCMKey);
+                body.append("\"");
+                body.append("}");
+
+                String userInfo = body.toString();
+                Log.d("Body is", userInfo);
+
+                // Send post request
+                DataOutputStream wr = new DataOutputStream(client.getOutputStream());
+                System.out.println("before Write\n");
+                wr.writeBytes(userInfo);
+                wr.flush();
+                wr.close();
+
+                responseCode = client.getResponseCode();
+                System.out.println("\nSending 'POST' request to URL : " + url);
+                System.out.println("Post body : " + userInfo);
+                System.out.println("Response Code : " + responseCode);
+
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(client.getInputStream()));
+                String inputLine;
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                if(responseCode!=200){
+                    Toast.makeText(PostLogin.this, "Notification is not able to synchronize with server",
+                            Toast.LENGTH_LONG).show();
+                }
+            } catch (MalformedURLException E) {
+                Log.e("URL", "The URL is not correct");
+            } catch (IOException E) {
+            }
+
+
+            System.out.println("onPostExecute response: " + response.toString());
+
+            return responseCode;
+        }
+
+        protected void onProgressUpdate(Integer...parms) {
+            super.onProgressUpdate();
+        }
+
+        protected void onPostExecute(Integer result) {
+            //    Log.e("onPost login response: ",result);
+            Log.d("FCM response code ",Integer.toString(result));
+            if(result==200){
+               Log.d("FCM key for sign in","FCM key added!");
+            }
+            else{
+                Log.d("something wrong happens","FCM key cannot be added");
+                return;
+            }
+
+        }
+    }
+
+
 
 }

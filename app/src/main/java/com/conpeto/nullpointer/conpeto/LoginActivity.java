@@ -144,6 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 
             } catch (IOException E) {
             }
+
             return responseContent;
         }
 
