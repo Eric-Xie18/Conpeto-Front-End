@@ -15,7 +15,7 @@
         android:layout_marginTop="66dp"
         android:text="@string/go_back" />
     <TextView
-        android:id="@+id/group_info"
+        android:id="@+id/cat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="24dp"
@@ -30,9 +30,25 @@
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/group_info"
+        android:layout_below="@id/cat"
         android:layout_alignParentLeft="true" />
-
-
+    <TextView
+        android:id="@+id/dist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/spinner1"
+        android:layout_alignParentLeft="true"
+        android:text= "Please pick the distance (in Km)" />
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/dist"
+        android:layout_alignParentLeft="true" />
 
 </RelativeLayout>

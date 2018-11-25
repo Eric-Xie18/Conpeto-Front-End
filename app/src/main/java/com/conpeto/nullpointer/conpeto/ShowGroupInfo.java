@@ -55,7 +55,7 @@ public class ShowGroupInfo extends AppCompatActivity {
         }
 
         TextView info = (TextView) findViewById(R.id.group_info);
-        String result = "\nGroup Name: " + name + "\n\nGroup Description: " + dets + "\n\nCategory: " + cat + "\n";
+        String result = "\nGroup Name: " + name + "\n\nGroup Description: " + dets + "\n\nCategory: " + cat + "\n\n\n LIST OF GROUP MEMBERS:";
         info.setTypeface(null, Typeface.BOLD);
         info.setText(result);
 

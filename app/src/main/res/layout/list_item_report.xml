@@ -10,8 +10,8 @@
     <TextView android:id="@+id/name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="10dip"
         android:textSize="16dip"
+        android:padding="10dip"
         android:textStyle="bold" />
     <Button
         android:id="@+id/report"

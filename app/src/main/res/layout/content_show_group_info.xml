@@ -16,6 +16,7 @@
         android:text="@string/go_back" />
     <TextView
         android:id="@+id/group_info"
+        android:textSize="16dip"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="24dp"
@@ -29,7 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@id/group_info"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignLeft= "@id/group_info"/>
 
     <Button
         android:id="@+id/delete"
