@@ -43,7 +43,6 @@ public class ViewGroup extends AppCompatActivity {
         checkGroup.execute();
     }
 
-
     private class CheckGroup extends AsyncTask<Void, Integer, String> {
 
         protected String doInBackground(Void... params) {
