@@ -58,6 +58,7 @@ public class ShowGroupInfo extends AppCompatActivity {
         String result = "\nGroup Name: " + name + "\n\nGroup Description: " + dets + "\n\nCategory: " + cat + "\n";
         info.setTypeface(null, Typeface.BOLD);
         info.setText(result);
+
         final Button goBack = findViewById(R.id.go_Back);
         goBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -66,6 +67,27 @@ public class ShowGroupInfo extends AppCompatActivity {
                 ShowGroupInfo.this.startActivity(viewGroup);
             }
         });
+
+        final Button delete = findViewById(R.id.delete);
+        delete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent deleteGroup = new Intent(ShowGroupInfo.this, DeleteGroup.class);
+                deleteGroup.putExtra("user_ID", userID);
+                deleteGroup.putExtra("name",name);
+                deleteGroup.putExtra("owner",users.get(0));
+
+                //detaials that enable coming back to this page
+                deleteGroup.putExtra("groupID",ID);
+                deleteGroup.putExtra("category",cat);
+                deleteGroup.putExtra("details",dets);
+                deleteGroup.putExtra("userIDs",userIDs);
+                deleteGroup.putExtra("Lat",Lat);
+                deleteGroup.putExtra("Long",Long);
+
+                ShowGroupInfo.this.startActivity(deleteGroup);
+            }
+        });
+
 
         CheckGroup checkGroup = new CheckGroup();
         checkGroup.execute();
@@ -111,10 +133,10 @@ public class ShowGroupInfo extends AppCompatActivity {
                 userNames.add(result.substring(start + 7, end - 3));
                 index = end;
                 start = result.indexOf("report_count",index);
-                end = result.indexOf("\"",start+13);
+                end = result.indexOf(",\"",start+13);
                 if(start == -1 || end == -1)
                     break;
-                RepCnts.add(result.substring(start + 13, end));
+                RepCnts.add(result.substring(start + 14, end));
 
             }
 
@@ -162,13 +184,21 @@ public class ShowGroupInfo extends AppCompatActivity {
                         public void onClick(View v) {
                             Toast.makeText(ShowGroupInfo.this,"Pressed " + list.get(position),Toast.LENGTH_SHORT).show();
                             Intent reportUser = new Intent(ShowGroupInfo.this, ReportUser.class);
-                            reportUser.putExtra("user_ID", userID);
+
+                            //Intents to report user
                             reportUser.putExtra("report_count",report_count[position]);
-                            reportUser.putExtra("user'sID",users.get(position));
+                            reportUser.putExtra("reportID",users.get(position));
 
                             //send intents that enable coming back to this page
-
-
+                            reportUser.putExtra("name",name);
+                            reportUser.putExtra("groupID",ID);
+                            reportUser.putExtra("category",cat);
+                            reportUser.putExtra("details",dets);
+                            reportUser.putExtra("userIDs",userIDs);
+                            reportUser.putExtra("Lat",Lat);
+                            reportUser.putExtra("Long",Long);
+                            reportUser.putExtra("user_ID",userID);
+                            Log.e("rep: ",report_count[position]);
                             ShowGroupInfo.this.startActivity(reportUser);
 
                         }

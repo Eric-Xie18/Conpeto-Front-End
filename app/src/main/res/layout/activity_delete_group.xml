@@ -15,30 +15,11 @@
         android:layout_marginTop="66dp"
         android:text="@string/go_back" />
     <TextView
-        android:id="@+id/group_info"
+        android:id="@+id/msg"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="24dp"
         android:layout_alignParentStart="true"
         android:layout_below="@id/go_Back"
         android:layout_alignParentLeft="true" />
-
-    <ListView
-        android:id="@+id/list_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/group_info"
-        android:layout_alignParentLeft="true" />
-
-    <Button
-        android:id="@+id/delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/list_view"
-        android:layout_marginLeft="9dp"
-        android:text="DELETE GROUP" />
-
 </RelativeLayout>
