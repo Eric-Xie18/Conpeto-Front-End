@@ -9,9 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 //import android.widget.TextView;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -43,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList(EMAIL));
+        loginButton.setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY);
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -64,6 +67,15 @@ public class LoginActivity extends AppCompatActivity {
                 // need to add more if needed
             }
         });
+
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+
+        if(isLoggedIn) {
+            Intent myIntent = new Intent(LoginActivity.this, PostLogin.class);
+            myIntent.putExtra("user_ID", AccessToken.getCurrentAccessToken().getUserId());
+            LoginActivity.this.startActivity(myIntent);
+        }
     }
 
     @Override
@@ -71,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,6 +107,9 @@ public class LoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onBackPressed() {
+        //do nothing
+    }
 
     private class SigninUser extends AsyncTask<Void, Integer, String> {
         protected String doInBackground(Void...params) {
@@ -128,6 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 
             } catch (IOException E) {
             }
+
             return responseContent;
         }
 

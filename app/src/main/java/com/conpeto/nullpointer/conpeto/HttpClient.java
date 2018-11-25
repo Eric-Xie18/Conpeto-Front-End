@@ -15,12 +15,12 @@ public class HttpClient {
     private String responseCode = null;
     HttpClient(String url, String method){
         try {
-            this.url = new URL(url);
-            this.method = method;
+              this.url = new URL(url);
+              this.method = method;
         } catch(MalformedURLException E){
-            Log.e("URL malformed","in HttpClient constructor");
+           Log.e("URL malformed","in HttpClient constructor");
         }
-    }
+        }
 
     String sendRequest(String body){
         String responseContent = null;
@@ -81,32 +81,32 @@ public class HttpClient {
             } catch (IOException E) {
             }
         }
-        else{
-            try {
-                HttpURLConnection client = (HttpURLConnection) url.openConnection();
-                client.setRequestMethod(method);
-                int responseCode = client.getResponseCode();
-                this.responseCode = Integer.toString(responseCode);
-                System.out.println("\nSending " + method + " request to URL : " + url);
-                System.out.println("Response Code : " + responseCode);
+            else{
+                try {
+                    HttpURLConnection client = (HttpURLConnection) url.openConnection();
+                    client.setRequestMethod(method);
+                    int responseCode = client.getResponseCode();
+                    this.responseCode = Integer.toString(responseCode);
+                    System.out.println("\nSending " + method + " request to URL : " + url);
+                    System.out.println("Response Code : " + responseCode);
 
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(client.getInputStream()));
-                String inputLine;
+                    BufferedReader in = new BufferedReader(
+                            new InputStreamReader(client.getInputStream()));
+                    String inputLine;
 
-                StringBuffer response = new StringBuffer();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
+                    StringBuffer response = new StringBuffer();
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+                    in.close();
 
-                responseContent = response.toString();
+                    responseContent = response.toString();
 
-            } catch (IOException E) { }
-        }
+                } catch (IOException E) { }
+            }
 
         System.out.println("Server response is: " + responseContent);
-        return responseContent;
+      return responseContent;
     }
 
     String getResponseCode(){
