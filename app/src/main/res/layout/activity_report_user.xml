@@ -3,23 +3,30 @@
     android:layout_height="match_parent"
     android:paddingLeft="16dp"
     android:paddingRight="16dp" >
+
     <Button
         android:id="@+id/go_Back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="9dp"
-        android:layout_marginLeft="9dp"
-        android:layout_marginTop="66dp"
-        android:text="@string/go_back" />
+        android:layout_marginStart="156dp"
+        android:layout_marginLeft="156dp"
+        android:layout_marginTop="260dp"
+        android:text="Yes" />
+
     <TextView
-        android:id="@+id/msg"
-        android:layout_width="fill_parent"
+        android:id="@+id/textView_Confirm"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="24dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/go_Back"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="52dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="205dp"
+        android:text="Are you sure that you want to report this user?"
+        android:textSize="15sp" />
+
 </RelativeLayout>

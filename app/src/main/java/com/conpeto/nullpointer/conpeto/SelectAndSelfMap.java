@@ -49,15 +49,18 @@ public class SelectAndSelfMap extends FragmentActivity implements OnMapReadyCall
 
     private Boolean mLocationPermissionsGranted = false;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    private String lon = null;
+    private String lat = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_and_self_map);
+        lon = getIntent().getStringExtra("long");
+        lat = getIntent().getStringExtra("lat");
         getLocationPermission();
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-       SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
@@ -79,100 +82,103 @@ public class SelectAndSelfMap extends FragmentActivity implements OnMapReadyCall
             }
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
-
-        }
-    }
-
-    private void getDeviceLocation(){
-        Log.d(TAG, "getDeviceLocation: getting the devices current location");
-
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
-        try{
-            if(mLocationPermissionsGranted){
-
-                final Task location = mFusedLocationProviderClient.getLastLocation();
-                location.addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if(task.isSuccessful()){
-                            Log.d(TAG, "onComplete: found location!");
-                            Location currentLocation = (Location) task.getResult();
-
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
-                                    DEFAULT_ZOOM);
-
-                        }else{
-                            Log.d(TAG, "onComplete: current location is null");
-                            Toast.makeText(SelectAndSelfMap.this, "unable to get current location", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+            if(lat!=null && lon!=null){
+                LatLng group = new LatLng(Double.parseDouble(lat),Double.parseDouble(lon) );
+                mMap.addMarker(new MarkerOptions().position(group).title("Marker for the group!"));
             }
-        }catch (SecurityException e){
-            Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage() );
         }
     }
 
-    private void moveCamera(LatLng latLng, float zoom){
-        Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-    }
+        private void getDeviceLocation(){
+            Log.d(TAG, "getDeviceLocation: getting the devices current location");
 
-    private void initMap(){
-        Log.d(TAG, "initMap: initializing map");
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        mapFragment.getMapAsync(SelectAndSelfMap.this);
-    }
+            try{
+                if(mLocationPermissionsGranted){
 
-    private void getLocationPermission(){
-        Log.d(TAG, "getLocationPermission: getting location permissions");
-        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION};
+                    final Task location = mFusedLocationProviderClient.getLastLocation();
+                    location.addOnCompleteListener(new OnCompleteListener() {
+                        @Override
+                        public void onComplete(@NonNull Task task) {
+                            if(task.isSuccessful()){
+                                Log.d(TAG, "onComplete: found location!");
+                                Location currentLocation = (Location) task.getResult();
 
-        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                                moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
+                                        DEFAULT_ZOOM);
+
+                            }else{
+                                Log.d(TAG, "onComplete: current location is null");
+                                Toast.makeText(SelectAndSelfMap.this, "unable to get current location", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }catch (SecurityException e){
+                Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage() );
+            }
+        }
+
+        private void moveCamera(LatLng latLng, float zoom){
+            Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        }
+
+        private void initMap(){
+            Log.d(TAG, "initMap: initializing map");
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+            mapFragment.getMapAsync(SelectAndSelfMap.this);
+        }
+
+        private void getLocationPermission(){
+            Log.d(TAG, "getLocationPermission: getting location permissions");
+            String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION};
+
             if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                    COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                mLocationPermissionsGranted = true;
-                initMap();
+                    FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                        COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                    mLocationPermissionsGranted = true;
+                    initMap();
+                }else{
+                    ActivityCompat.requestPermissions(this,
+                            permissions,
+                            LOCATION_PERMISSION_REQUEST_CODE);
+                }
             }else{
                 ActivityCompat.requestPermissions(this,
                         permissions,
                         LOCATION_PERMISSION_REQUEST_CODE);
             }
-        }else{
-            ActivityCompat.requestPermissions(this,
-                    permissions,
-                    LOCATION_PERMISSION_REQUEST_CODE);
         }
-    }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(TAG, "onRequestPermissionsResult: called.");
-        mLocationPermissionsGranted = false;
+        @Override
+        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+            Log.d(TAG, "onRequestPermissionsResult: called.");
+            mLocationPermissionsGranted = false;
 
-        switch(requestCode){
-            case LOCATION_PERMISSION_REQUEST_CODE:{
-                if(grantResults.length > 0){
-                    for(int i = 0; i < grantResults.length; i++){
-                        if(grantResults[i] != PackageManager.PERMISSION_GRANTED){
-                            mLocationPermissionsGranted = false;
-                            Log.d(TAG, "onRequestPermissionsResult: permission failed");
-                            return;
+            switch(requestCode){
+                case LOCATION_PERMISSION_REQUEST_CODE:{
+                    if(grantResults.length > 0){
+                        for(int i = 0; i < grantResults.length; i++){
+                            if(grantResults[i] != PackageManager.PERMISSION_GRANTED){
+                                mLocationPermissionsGranted = false;
+                                Log.d(TAG, "onRequestPermissionsResult: permission failed");
+                                return;
+                            }
                         }
+                        Log.d(TAG, "onRequestPermissionsResult: permission granted");
+                        mLocationPermissionsGranted = true;
+                        //initialize our map
+                        initMap();
                     }
-                    Log.d(TAG, "onRequestPermissionsResult: permission granted");
-                    mLocationPermissionsGranted = true;
-                    //initialize our map
-                    initMap();
                 }
             }
         }
+
+
+
     }
-
-
-
-}

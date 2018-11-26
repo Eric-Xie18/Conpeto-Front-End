@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class DeleteGroup extends AppCompatActivity {
 
     private String userID,name,creator,cat,ID,Lat,Long,dets,userIDs;
-
+    private String deleteResult = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,10 +32,13 @@ public class DeleteGroup extends AppCompatActivity {
         Long = getIntent().getStringExtra("Long");
         dets = getIntent().getStringExtra("details");
         userIDs = getIntent().getStringExtra("userIDs");
+        final Button goBack = findViewById(R.id.go_Back);
 
-        Delete delete = new Delete();
-        delete.execute();
-
+        goBack.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Delete deleteResult = new Delete();
+                deleteResult.execute();
+            }});
     }
     private class Delete extends AsyncTask<Void, Integer, String> {
 
@@ -66,34 +69,36 @@ public class DeleteGroup extends AppCompatActivity {
             message.setText(result);
             final String result2 = result;
 
-            //BACK BUTTON
-            final Button goBack = findViewById(R.id.go_Back);
-            goBack.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
+            Intent deleteGroup= new Intent(DeleteGroup.this, ShowGroupInfo.class);
+            Intent success = new Intent(DeleteGroup.this, ViewGroup.class);
+            if(!result2.equals("Group successfully deleted")){
+                deleteGroup.putExtra("name",name);
+                deleteGroup.putExtra("groupID",ID);
+                deleteGroup.putExtra("category",cat);
+                deleteGroup.putExtra("details",dets);
+                deleteGroup.putExtra("userIDs",userIDs);
+                deleteGroup.putExtra("Lat",Lat);
+                deleteGroup.putExtra("Long",Long);
+                deleteGroup.putExtra("user_ID",userID);
+                DeleteGroup.this.startActivity(deleteGroup);
+                finish();
+            }
 
-                    Intent deleteGroup= new Intent(DeleteGroup.this, ShowGroupInfo.class);
-                    Intent success = new Intent(DeleteGroup.this, ViewGroup.class);
-                    if(!result2.equals("Group successfully deleted")){
-                        deleteGroup.putExtra("name",name);
-                        deleteGroup.putExtra("groupID",ID);
-                        deleteGroup.putExtra("category",cat);
-                        deleteGroup.putExtra("details",dets);
-                        deleteGroup.putExtra("userIDs",userIDs);
-                        deleteGroup.putExtra("Lat",Lat);
-                        deleteGroup.putExtra("Long",Long);
-                        deleteGroup.putExtra("user_ID",userID);
+             else{
+                   success.putExtra("user_ID",userID);
+                   DeleteGroup.this.startActivity(success);
+                   finish();
+            }
 
-                        DeleteGroup.this.startActivity(deleteGroup);
-                    }
-
-                    else{
-                        success.putExtra("user_ID",userID);
-                        DeleteGroup.this.startActivity(success);
-                    }
-                }
-
-            });
 
         }
+        }
+
+    @Override
+    public void onBackPressed() {
+        Delete deleteResult = new Delete();
+        deleteResult.execute();
     }
+
+
 }

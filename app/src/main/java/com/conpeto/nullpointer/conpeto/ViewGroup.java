@@ -18,6 +18,8 @@ import android.widget.Toast;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+
+// User_id checked!
 public class ViewGroup extends AppCompatActivity {
     private String userID;
     private ListView lv;
@@ -176,4 +178,12 @@ public class ViewGroup extends AppCompatActivity {
             });
         }
     }
+
+   @Override
+   public void onBackPressed(){
+       Intent postLogin = new Intent(ViewGroup.this, PostLogin.class);
+       postLogin.putExtra("user_ID", userID);
+       ViewGroup.this.startActivity(postLogin);
+       finish();
+       }
 }
