@@ -63,11 +63,11 @@ public class GroupList extends AppCompatActivity {
             if(!Category.equals("All")&&!radius.equals("Any")){
                 urlBuilder2.append("category=");
                 urlBuilder2.append(Category);
-                urlBuilder2.append("longitude=");
+                urlBuilder2.append("&longitude=");
                 urlBuilder2.append(Long);
-                urlBuilder2.append("latitude=");
+                urlBuilder2.append("&latitude=");
                 urlBuilder2.append(Lat);
-                urlBuilder2.append("distance=");
+                urlBuilder2.append("&distance=");
                 urlBuilder2.append(radius);
                 String url2 = urlBuilder2.toString();
                 HttpClient http2 = new HttpClient(url2, "GET");
@@ -85,9 +85,9 @@ public class GroupList extends AppCompatActivity {
             else if(Category.equals("All")&& !radius.equals("Any")){
                 urlBuilder2.append("longitude=");
                 urlBuilder2.append(Long);
-                urlBuilder2.append("latitude=");
+                urlBuilder2.append("&latitude=");
                 urlBuilder2.append(Lat);
-                urlBuilder2.append("distance=");
+                urlBuilder2.append("&distance=");
                 urlBuilder2.append(radius);
                 String url2 = urlBuilder2.toString();
                 HttpClient http2 = new HttpClient(url2, "GET");
