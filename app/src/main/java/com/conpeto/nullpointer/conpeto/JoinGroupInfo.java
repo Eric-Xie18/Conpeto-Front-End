@@ -63,7 +63,7 @@ public class JoinGroupInfo extends AppCompatActivity {
             }
         });
         final Button joinGroup = findViewById(R.id.join);
-        goBack.setOnClickListener(new View.OnClickListener() {
+        joinGroup.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 AddUserToGroup joinGroup = new AddUserToGroup();
                 joinGroup.execute();
@@ -139,7 +139,7 @@ public class JoinGroupInfo extends AppCompatActivity {
             String method = "PUT";
             // append the content in JSON format
             StringBuilder body = new StringBuilder();
-            body.append("{\"user\":");
+            body.append("{\"id\":");
             body.append("\"");
             body.append(userID);
             body.append("\"");
@@ -168,22 +168,19 @@ public class JoinGroupInfo extends AppCompatActivity {
         }
 
         protected void onPostExecute(Boolean result) {
-            // add toast message for added and not added
-            // Intent goBack = new Intent(JoinGroup.this,PostLogin.class);
             if(!result) {
                 Toast.makeText(JoinGroupInfo.this, "No such group or user was found!",
                         Toast.LENGTH_LONG).show();
             }
-            else{
+            else {
 
-                //goBack.putExtra("user_ID",userID);
-                Toast.makeText(JoinGroupInfo.this, "Join the group successfully!",
+                Toast.makeText(JoinGroupInfo.this, "Joined the group successfully!",
                         Toast.LENGTH_LONG).show();
-                //JoinGroup.this.startActivity(goBack);
+                }
 
             }
         }
 
-    }
 }
+
 
