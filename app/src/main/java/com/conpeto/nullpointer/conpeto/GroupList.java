@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class GroupList extends AppCompatActivity {
     private String radius,Category,userID;
@@ -97,9 +98,41 @@ public class GroupList extends AppCompatActivity {
                 Log.e("catLog",catlocgroups);
             }
 
-            String result = catlocgroups + "#$#BREAK_HERE#$#" + usergroups;
+           /* String result = catlocgroups + "#$#BREAK_HERE#$#" + usergroups;
             Log.e("LOL",result);
-            return result;
+            return result;*/
+            ArrayList<Group> groupsToFilter = stringToList(catlocgroups);
+            ArrayList<Group> groupsToRemove = stringToList(usergroups);
+
+            Log.e("Tofilter:",groupsToFilter.get(4).getName());
+            Log.e("ToRemove:",groupsToRemove.get(2).getName());
+            String str;
+
+            if(groupsToFilter.get(4).checkEquality(groupsToRemove.get(2)))
+                str = "YES";
+            else
+                str="plsEnuFFF";
+            Log.e("str",str);
+
+            for(int i=0; i<groupsToFilter.size(); ++i){
+                Group g = groupsToFilter.get(i);
+                for(int j=0; j<groupsToRemove.size(); ++j){
+
+                    if(g.checkEquality(groupsToRemove.get(j)))
+                        groupsToFilter.set(i,null);
+                }
+            }
+
+            ArrayList <Group> groups = new ArrayList<Group>();
+
+            for(int i=0; i<groupsToFilter.size(); ++i){
+                Group g = groupsToFilter.get(i);
+                if(g!=null)
+                    groups.add(g);
+            }
+            System.out.print(groups);
+            return groups;
+
         }
         protected void onProgressUpdate(Integer... parms) {
 
@@ -171,29 +204,30 @@ public class GroupList extends AppCompatActivity {
             return groups;
         }
 
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(ArrayList<Group> result) {
 
-            int j = result.indexOf("#$#BREAK_HERE#$#",0);
+           /* int j = result.indexOf("#$#BREAK_HERE#$#",0);
             String catlocgroups = result.substring(0,j);
             String usergroups = result.substring(j+16,result.length());
             Log.e("catloc",catlocgroups);
-            Log.e("users",usergroups);
+            Log.e("users",usergroups);*/
 
             ListView lv;
             ArrayAdapter<String> adapter;
 
-            ArrayList<Group> groupsToFilter = stringToList(catlocgroups);
-            ArrayList<Group> groupsToRemove = stringToList(usergroups);
+            //ArrayList<Group> groupsToFilter = stringToList(catlocgroups);
+          //  ArrayList<Group> groupsToRemove = stringToList(usergroups);
 
-           Log.e("NOW",groupsToRemove.get(0).getName());
-            Log.e("NOW1",groupsToRemove.get(groupsToRemove.size()-1).getName());
-            Log.e("NOW2",groupsToFilter.get(0).getName());
-            Log.e("NOW3",groupsToFilter.get(groupsToFilter.size()-1).getName());
-            /*lv = (ListView) findViewById(R.id.list_view);
+            ArrayList <String> GroupNames = new ArrayList<>();
+            for (int j = 0; j < result.size(); j++) {
+                GroupNames.add(result.get(j).getName());
+            }
+
+            lv = (ListView) findViewById(R.id.list_view);
             adapter = new ArrayAdapter<String>(GroupList.this, R.layout.list_item, R.id.name, GroupNames);
-            lv.setAdapter(adapter);*/
+            lv.setAdapter(adapter);
 
-           /* lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           /*lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

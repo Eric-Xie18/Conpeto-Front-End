@@ -8,6 +8,19 @@ public class Group {
     private String userIDs;
     private String Lat,Long;
 
+
+    public boolean checkEquality(Group obj) {
+        boolean a = this.groupID.equals(obj.getID());
+        boolean b = this.name.equals(obj.getName());
+        boolean c = this.category.equals(obj.getCategory());
+        boolean d = this.details.equals(obj.getDetails());
+        boolean e = this.userIDs.equals(obj.getUserIDs());
+        boolean f = this.Lat.equals(obj.getLat());
+        boolean g = this.Long.equals(obj.getLong());
+
+        return (a&&b&&c&&d&&e&&f&&g);
+    }
+
     public Group(String groupID, String name, String category, String details, String userIDs, String Lat, String Long)
     {
         this.groupID = groupID;
@@ -57,4 +70,7 @@ public class Group {
     public String getLong() {
         return Long;
     }
+
+
+
 }
