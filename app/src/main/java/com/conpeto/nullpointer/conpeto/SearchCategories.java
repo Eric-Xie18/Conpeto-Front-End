@@ -187,10 +187,10 @@ public class SearchCategories extends AppCompatActivity {
             public void onClick(View v) {
                 Intent next = new Intent(SearchCategories.this, GroupList.class);
                 next.putExtra("user_ID", userID);
-                next.putExtra("Lat", Lat);
-                next.putExtra("Long", Long);
+                next.putExtra("userLat", Lat);
+                next.putExtra("userLong", Long);
                 next.putExtra("radius", radius);
-                next.putExtra("cat", Category);
+                next.putExtra("userCat", Category);
                 SearchCategories.this.startActivity(next);
             }
         });

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewDebug;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,10 +28,19 @@ public class GroupList extends AppCompatActivity {
         setContentView(R.layout.activity_group_list);
 
         radius = getIntent().getStringExtra("radius");
-        Category = getIntent().getStringExtra("cat");
+        Category = getIntent().getStringExtra("userCat");
         userID = getIntent().getStringExtra("user_ID");
-        Lat = getIntent().getDoubleExtra("Lat",0);
-        Long = getIntent().getDoubleExtra("Long",0);
+        Lat = getIntent().getDoubleExtra("userLat",0);
+        Long = getIntent().getDoubleExtra("userLong",0);
+
+        final Button goBack = findViewById(R.id.go_Back);
+        goBack.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent postLogin = new Intent(GroupList.this, SearchCategories.class);
+                postLogin.putExtra("user_ID", userID);
+                GroupList.this.startActivity(postLogin);
+            }
+        });
 
         CheckGroup checkGroup = new CheckGroup();
         checkGroup.execute();
@@ -70,7 +80,7 @@ public class GroupList extends AppCompatActivity {
                 String url2 = urlBuilder2.toString();
                 HttpClient http2 = new HttpClient(url2, "GET");
                 catlocgroups = http2.sendRequest("");
-                Log.e("catLog",catlocgroups);
+                Log.e("catLoghere22",catlocgroups);
             }
             else if(Category.equals("All")&& !radius.equals("Any")){
                 urlBuilder2.append("longitude=");
@@ -95,24 +105,11 @@ public class GroupList extends AppCompatActivity {
                 String str2 = http4.sendRequest("");
                 String str3 = http5.sendRequest("");
                 catlocgroups = str1+str2+str3;
-                Log.e("catLog",catlocgroups);
+                Log.e("catLogLast",catlocgroups);
             }
 
-           /* String result = catlocgroups + "#$#BREAK_HERE#$#" + usergroups;
-            Log.e("LOL",result);
-            return result;*/
             ArrayList<Group> groupsToFilter = stringToList(catlocgroups);
             ArrayList<Group> groupsToRemove = stringToList(usergroups);
-
-            Log.e("Tofilter:",groupsToFilter.get(4).getName());
-            Log.e("ToRemove:",groupsToRemove.get(2).getName());
-            String str;
-
-            if(groupsToFilter.get(4).checkEquality(groupsToRemove.get(2)))
-                str = "YES";
-            else
-                str="plsEnuFFF";
-            Log.e("str",str);
 
             for(int i=0; i<groupsToFilter.size(); ++i){
                 Group g = groupsToFilter.get(i);
@@ -130,11 +127,10 @@ public class GroupList extends AppCompatActivity {
                 if(g!=null)
                     groups.add(g);
             }
-            System.out.print(groups);
             return groups;
 
         }
-        protected void onProgressUpdate(Integer... parms) {
+        protected void onProgressUpdate(Group... parms) {
 
             super.onProgressUpdate();
         }
@@ -206,19 +202,11 @@ public class GroupList extends AppCompatActivity {
 
         protected void onPostExecute(ArrayList<Group> result) {
 
-           /* int j = result.indexOf("#$#BREAK_HERE#$#",0);
-            String catlocgroups = result.substring(0,j);
-            String usergroups = result.substring(j+16,result.length());
-            Log.e("catloc",catlocgroups);
-            Log.e("users",usergroups);*/
-
             ListView lv;
             ArrayAdapter<String> adapter;
-
-            //ArrayList<Group> groupsToFilter = stringToList(catlocgroups);
-          //  ArrayList<Group> groupsToRemove = stringToList(usergroups);
-
+            final ArrayList<Group> Final = new ArrayList<>(result);
             ArrayList <String> GroupNames = new ArrayList<>();
+
             for (int j = 0; j < result.size(); j++) {
                 GroupNames.add(result.get(j).getName());
             }
@@ -226,24 +214,32 @@ public class GroupList extends AppCompatActivity {
             lv = (ListView) findViewById(R.id.list_view);
             adapter = new ArrayAdapter<String>(GroupList.this, R.layout.list_item, R.id.name, GroupNames);
             lv.setAdapter(adapter);
-
-           /*lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     //toast added for debugging
                     Intent next = new Intent(GroupList.this, JoinGroupInfo.class);
-                    next.putExtra("name",Groups[position].getName());
-                    next.putExtra("groupID",Groups[position].getID());
-                    next.putExtra("category",Groups[position].getCategory());
-                    next.putExtra("details",Groups[position].getDetails());
-                    next.putExtra("userIDs",Groups[position].getUserIDs());
-                    next.putExtra("Lat",Groups[position].getLat());
-                    next.putExtra("Long",Groups[position].getLong());
+
+                    //group details
+                    next.putExtra("name",Final.get(position).getName());
+                    next.putExtra("groupID",Final.get(position).getID());
+                    next.putExtra("category",Final.get(position).getCategory());
+                    next.putExtra("details",Final.get(position).getDetails());
+                    next.putExtra("userIDs",Final.get(position).getUserIDs());
+                    next.putExtra("Lat",Final.get(position).getLat());
+                    next.putExtra("Long",Final.get(position).getLong());
+
+                    //user details
                     next.putExtra("user_ID",userID);
+                    next.putExtra("userCat",Category);
+                    next.putExtra("userLat",Lat);
+                    next.putExtra("userLong",Long);
+                    next.putExtra("radius",radius);
+
                     GroupList.this.startActivity(next);
                 }
-            });*/
+            });
 
         }
     }

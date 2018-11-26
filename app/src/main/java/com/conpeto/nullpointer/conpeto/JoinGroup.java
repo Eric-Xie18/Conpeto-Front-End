@@ -56,17 +56,24 @@ public class JoinGroup extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 }
 
-                else{
+                /*else{
                     AddUserToGroup joinGroup = new AddUserToGroup();
                     joinGroup.execute();
-                }
+                }*/
             }
         });
 
     }
 
 
-    private class AddUserToGroup extends AsyncTask<Void, Integer, Boolean> {
+    public class AddUserToGroup extends AsyncTask<Void, Integer, Boolean> {
+
+        private String userID,groupName;
+
+        public AddUserToGroup(String userid, String groupName){
+            this.userID = userid;
+            this.groupName = groupName;
+        }
         protected Boolean doInBackground(Void... params) {
             boolean success = false;
             String response = null;
@@ -104,17 +111,17 @@ public class JoinGroup extends AppCompatActivity {
 
         protected void onPostExecute(Boolean result) {
             // add toast message for added and not added
-            Intent goBack = new Intent(JoinGroup.this,PostLogin.class);
+           // Intent goBack = new Intent(JoinGroup.this,PostLogin.class);
             if(!result) {
                 Toast.makeText(JoinGroup.this, "No such group or user was found!",
                         Toast.LENGTH_LONG).show();
             }
             else{
 
-                goBack.putExtra("user_ID",userID);
+                //goBack.putExtra("user_ID",userID);
                 Toast.makeText(JoinGroup.this, "Join the group successfully!",
                         Toast.LENGTH_LONG).show();
-                 JoinGroup.this.startActivity(goBack);
+                 //JoinGroup.this.startActivity(goBack);
 
             }
         }

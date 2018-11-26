@@ -161,6 +161,8 @@ public class ViewGroup extends AppCompatActivity {
                     //toast added for debugging
                     Toast.makeText(ViewGroup.this,"Pressed " + Groups[position].getName(),Toast.LENGTH_SHORT).show();
                     Intent next = new Intent(ViewGroup.this, ShowGroupInfo.class);
+
+                    //GROUP DETAILS
                     next.putExtra("name",Groups[position].getName());
                     next.putExtra("groupID",Groups[position].getID());
                     next.putExtra("category",Groups[position].getCategory());
