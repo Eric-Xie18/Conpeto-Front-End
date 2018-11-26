@@ -60,29 +60,29 @@ private boolean getKey = false;
                                                        case 0:
                                                            // Whatever you want to happen when the first item gets selected
                                                            radius = radius;
-                                                           radiusDislay.setText("The current filter distance is" + radius+ " KM");
+                                                           radiusDislay.setText("The current filter distance is " + radius+ " KM");
                                                            break;
                                                        case 1:
                                                            // Whatever you want to happen when the second item gets selected
                                                            radius = "5";
-                                                           radiusDislay.setText("The current filter distance is" + radius + " KM");
+                                                           radiusDislay.setText("The current filter distance is " + radius + " KM");
                                                            break;
                                                        case 2:
                                                            // Whatever you want to happen when the thrid item gets selected
                                                            radius = "10";
-                                                           radiusDislay.setText("The current filter distance is" + radius + " KM");
+                                                           radiusDislay.setText("The current filter distance is " + radius + " KM");
                                                            break;
 
                                                        case 3:
                                                            // Whatever you want to happen when the thrid item gets selected
                                                            radius = "15";
-                                                           radiusDislay.setText("The current filter distance is" + radius + " KM");
+                                                           radiusDislay.setText("The current filter distance is " + radius + " KM");
                                                            break;
 
                                                        case 4:
                                                            // Whatever you want to happen when the thrid item gets selected
                                                            radius = "30";
-                                                           radiusDislay.setText("The current filter distance is" + radius + " KM");
+                                                           radiusDislay.setText("The current filter distance is " + radius + " KM");
                                                            break;
 
                                                            case 5:

@@ -93,6 +93,14 @@ public class ShowGroupInfo extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent viewGroup = new Intent(ShowGroupInfo.this, ViewGroup.class);
+        viewGroup.putExtra("user_ID", userID);
+        ShowGroupInfo.this.startActivity(viewGroup);
+    }
+
+
     private class CheckGroup extends AsyncTask<Void, Integer, String> {
 
         protected String doInBackground(Void... params) {
