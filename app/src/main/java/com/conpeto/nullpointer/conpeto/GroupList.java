@@ -25,7 +25,7 @@ public class GroupList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_list);
 
-         radius = getIntent().getStringExtra("radius");
+        radius = getIntent().getStringExtra("radius");
         Category = getIntent().getStringExtra("cat");
         userID = getIntent().getStringExtra("user_ID");
         Lat = getIntent().getDoubleExtra("Lat",0);
@@ -34,9 +34,9 @@ public class GroupList extends AppCompatActivity {
         CheckGroup checkGroup = new CheckGroup();
         checkGroup.execute();
     }
-    private class CheckGroup extends AsyncTask<Void, Integer, String> {
+    private class CheckGroup extends AsyncTask<Void, Group, ArrayList<Group>> {
 
-        protected String doInBackground(Void... params) {
+        protected ArrayList<Group> doInBackground(Void... params) {
 
             StringBuilder urlBuilder = new StringBuilder("http://null-pointers.herokuapp.com/group");
             urlBuilder.append("?id=");
@@ -106,13 +106,8 @@ public class GroupList extends AppCompatActivity {
             super.onProgressUpdate();
         }
 
-        protected void onPostExecute(String result) {
+        ArrayList<Group> stringToList(String result){
 
-            int j = result.indexOf("#$#BREAK_HERE#$#",0);
-            String catlocgroups = result.substring(0,j);
-            String usergroups = result.substring(j+16,result.length());
-            Log.e("catloc",catlocgroups);
-            Log.e("users",usergroups);
             //Indexes used for result substring calculation
             int index = 0, i;
 
@@ -121,9 +116,6 @@ public class GroupList extends AppCompatActivity {
 
             //Array List for all groups
             ArrayList<Group> groups = new ArrayList<>();
-            ArrayList<String> GroupNames = new ArrayList<>();
-            ListView lv;
-            ArrayAdapter<String> adapter;
 
             //Group attribute identifiers
             String idTag = "_id";
@@ -133,119 +125,75 @@ public class GroupList extends AppCompatActivity {
             String catTag = "group_category";
             String latTag = "group_latitude";
             String longTag = "group_longitude";
-            while (index < catlocgroups.length()) {
+
+            while (index < result.length()) {
                 //Extract group id
-                i = catlocgroups.indexOf(idTag, index);
+                i = result.indexOf(idTag, index);
                 i = i + 6;
-                index = catlocgroups.indexOf("\",", i + 1);
-                id = catlocgroups.substring(i, index);
+                index = result.indexOf("\",", i + 1);
+                id = result.substring(i, index);
                 //Extract group name
-                i = catlocgroups.indexOf(nameTag, index);
+                i = result.indexOf(nameTag, index);
                 i = i + 8;
-                index = catlocgroups.indexOf("\",", i + 1);
-                name = catlocgroups.substring(i, index);
+                index = result.indexOf("\",", i + 1);
+                name = result.substring(i, index);
                 //Extract group details
-                i = catlocgroups.indexOf(detsTag, index);
+                i = result.indexOf(detsTag, index);
                 i = i + 16;
-                index = catlocgroups.indexOf("\",", i + 1);
-                dets = catlocgroups.substring(i, index);
+                index = result.indexOf("\",", i + 1);
+                dets = result.substring(i, index);
                 //Extract user IDs
-                i = catlocgroups.indexOf(userTag, index);
+                i = result.indexOf(userTag, index);
                 i = i + 10;
-                index = catlocgroups.indexOf("],\"", i + 1);
-                users = catlocgroups.substring(i, index + 1);
+                index = result.indexOf("],\"", i + 1);
+                users = result.substring(i, index + 1);
                 //Extract category
-                i = catlocgroups.indexOf(catTag, index);
+                i = result.indexOf(catTag, index);
                 i = i + 17;
-                index = catlocgroups.indexOf("\",", i + 1);
-                cat = catlocgroups.substring(i, index);
+                index = result.indexOf("\",", i + 1);
+                cat = result.substring(i, index);
                 //Extract lat
-                i = catlocgroups.indexOf(latTag, index);
+                i = result.indexOf(latTag, index);
                 i = i + 16;
-                index = catlocgroups.indexOf(",", i + 1);
-                Lat = catlocgroups.substring(i, index - 1);
+                index = result.indexOf(",", i + 1);
+                Lat = result.substring(i, index - 1);
                 //Extract longitude
-                i = catlocgroups.indexOf(longTag, index);
+                i = result.indexOf(longTag, index);
                 i = i + 17;
-                index = catlocgroups.indexOf("}", i + 1);
-                Long = catlocgroups.substring(i, index);
+                index = result.indexOf("}", i + 1);
+                Long = result.substring(i, index);
 
                 index = index + 2;
                 groups.add(new Group(id, name, cat, dets, users, Lat, Long));
 
             }
-            index = 0;
-            ArrayList<Group> remove = new ArrayList<>();
 
-            while (index < usergroups.length()) {
-                //Extract group id
-                i = usergroups.indexOf(idTag, index);
-                i = i + 6;
-                index = usergroups.indexOf("\",", i + 1);
-                id = usergroups.substring(i, index);
-                //Extract group name
-                i = usergroups.indexOf(nameTag, index);
-                i = i + 8;
-                index = usergroups.indexOf("\",", i + 1);
-                name = usergroups.substring(i, index);
-                //Extract group details
-                i = usergroups.indexOf(detsTag, index);
-                i = i + 16;
-                index = usergroups.indexOf("\",", i + 1);
-                dets = usergroups.substring(i, index);
-                //Extract user IDs
-                i = usergroups.indexOf(userTag, index);
-                i = i + 10;
-                index = usergroups.indexOf("],\"", i + 1);
-                users = usergroups.substring(i, index + 1);
-                //Extract category
-                i = usergroups.indexOf(catTag, index);
-                i = i + 17;
-                index = usergroups.indexOf("\",", i + 1);
-                cat = usergroups.substring(i, index);
-                //Extract lat
-                i = usergroups.indexOf(latTag, index);
-                i = i + 16;
-                index = usergroups.indexOf(",", i + 1);
-                Lat = usergroups.substring(i, index - 1);
-                //Extract longitude
-                i = usergroups.indexOf(longTag, index);
-                i = i + 17;
-                index = usergroups.indexOf("}", i + 1);
-                Long = usergroups.substring(i, index);
+            return groups;
+        }
 
-                index = index + 2;
-                remove.add(new Group(id, name, cat, dets, users, Lat, Long));
+        protected void onPostExecute(String result) {
 
-            }
+            int j = result.indexOf("#$#BREAK_HERE#$#",0);
+            String catlocgroups = result.substring(0,j);
+            String usergroups = result.substring(j+16,result.length());
+            Log.e("catloc",catlocgroups);
+            Log.e("users",usergroups);
 
-            for(int k =0;k<groups.size();++k)
-            {
-                for(int l = 0;l<remove.size();++l) {
-                    if (groups.get(k).equals(remove.get(l))) {
+            ListView lv;
+            ArrayAdapter<String> adapter;
 
-                        if(groups.get(k).getName()=="killMeNow" && remove.get(l).getName()=="killMeNow") {
-                            System.out.print(groups.get(k).equals(remove.get(l)));
-                            groups.set(k, null);
-                        }
-                        else
-                            groups.set(k, null);
-                    }
-                }
-            }
-            final Group[] Groups = groups.toArray(new Group[groups.size()]);
+            ArrayList<Group> groupsToFilter = stringToList(catlocgroups);
+            ArrayList<Group> groupsToRemove = stringToList(usergroups);
 
-            for (int l = 0; l < groups.size(); l++) {
-
-                if (groups.get(l) != null)
-                    GroupNames.add(Groups[l].getName());
-
-            }
-            lv = (ListView) findViewById(R.id.list_view);
+           Log.e("NOW",groupsToRemove.get(0).getName());
+            Log.e("NOW1",groupsToRemove.get(groupsToRemove.size()-1).getName());
+            Log.e("NOW2",groupsToFilter.get(0).getName());
+            Log.e("NOW3",groupsToFilter.get(groupsToFilter.size()-1).getName());
+            /*lv = (ListView) findViewById(R.id.list_view);
             adapter = new ArrayAdapter<String>(GroupList.this, R.layout.list_item, R.id.name, GroupNames);
-            lv.setAdapter(adapter);
+            lv.setAdapter(adapter);*/
 
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           /* lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -261,7 +209,7 @@ public class GroupList extends AppCompatActivity {
                     next.putExtra("user_ID",userID);
                     GroupList.this.startActivity(next);
                 }
-            });
+            });*/
 
         }
     }
