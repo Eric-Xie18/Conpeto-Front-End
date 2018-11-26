@@ -55,8 +55,12 @@ public class GroupList extends AppCompatActivity {
             String url1 = urlBuilder.toString();
             String usergroups,catlocgroups;
 
+            ArrayList<Group> empty = new ArrayList<>();
+
             HttpClient http = new HttpClient(url1, "GET");
             usergroups = http.sendRequest("");
+            if(usergroups==null)
+                usergroups ="";
             Log.e("userLog",usergroups);
             StringBuilder urlBuilder2 = new StringBuilder("http://null-pointers.herokuapp.com/group/?");
 
@@ -72,6 +76,8 @@ public class GroupList extends AppCompatActivity {
                 String url2 = urlBuilder2.toString();
                 HttpClient http2 = new HttpClient(url2, "GET");
                 catlocgroups = http2.sendRequest("");
+                if(catlocgroups==null)
+                    return empty;
                 Log.e("catLog",catlocgroups);
             }
             else if(!Category.equals("All")&&radius.equals("Any")){
@@ -80,6 +86,8 @@ public class GroupList extends AppCompatActivity {
                 String url2 = urlBuilder2.toString();
                 HttpClient http2 = new HttpClient(url2, "GET");
                 catlocgroups = http2.sendRequest("");
+                if(catlocgroups==null)
+                    return empty;
                 Log.e("catLoghere22",catlocgroups);
             }
             else if(Category.equals("All")&& !radius.equals("Any")){
@@ -93,13 +101,23 @@ public class GroupList extends AppCompatActivity {
                 String url2 = urlBuilder2.toString();
                 HttpClient http2 = new HttpClient(url2, "GET");
                 String catlocgroups1 = http2.sendRequest("");
+                if(catlocgroups1==null)
+                    catlocgroups1 = "";
                 String url3 = "http://null-pointers.herokuapp.com/group/?category=Music and Arts&longitude="+Long +"&latitude="+Lat+"&distance="+radius;
                 http2 = new HttpClient(url3, "GET");
                 String catlocgroups2 = http2.sendRequest("");
+                if(catlocgroups2==null)
+                    catlocgroups2 = "";
                 String url4 = "http://null-pointers.herokuapp.com/group/?category=Food and Conversation&longitude="+Long +"&latitude="+Lat+"&distance="+radius;
                 http2 = new HttpClient(url4, "GET");
                 String catlocgroups3 = http2.sendRequest("");
-                catlocgroups = catlocgroups1 + catlocgroups2 + catlocgroups3;
+                if(catlocgroups3==null)
+                    catlocgroups3 = "";
+
+                if(catlocgroups1.equals("")&&catlocgroups2.equals("")&&catlocgroups3.equals(""))
+                    return empty;
+                else
+                    catlocgroups = catlocgroups1 + catlocgroups2 + catlocgroups3;
                 Log.e("catLog",catlocgroups);
             }
             else{
@@ -110,9 +128,18 @@ public class GroupList extends AppCompatActivity {
                 HttpClient http4 = new HttpClient(urltwo, "GET");
                 HttpClient http5 = new HttpClient(urlthree, "GET");
                 String str1 = http3.sendRequest("");
+                if(str1 == null)
+                    str1 = "";
                 String str2 = http4.sendRequest("");
+                if(str2 == null)
+                    str2 = "";
                 String str3 = http5.sendRequest("");
+                if(str2 == null)
+                    str2 = "";
                 catlocgroups = str1+str2+str3;
+                if (catlocgroups.equals(""))
+                     return empty;
+                
                 Log.e("catLogLast",catlocgroups);
             }
 
