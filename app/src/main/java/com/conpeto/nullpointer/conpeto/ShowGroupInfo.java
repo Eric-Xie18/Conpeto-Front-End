@@ -26,6 +26,7 @@ public class ShowGroupInfo extends AppCompatActivity {
     private String userID;
     private String name, ID, dets, Lat, Long, userIDs, cat;
     private ListView lv;
+    private String ownerID = null;
     ArrayAdapter<String> adapter;
     ArrayList<String> users = new ArrayList<>();
 
@@ -45,6 +46,7 @@ public class ShowGroupInfo extends AppCompatActivity {
         Long = getIntent().getStringExtra("Long");
         dets = getIntent().getStringExtra("details");
         userIDs = getIntent().getStringExtra("userIDs");
+
 
         int index = 2,i=0;
         while (index < userIDs.length() && i<userIDs.length())
@@ -68,23 +70,20 @@ public class ShowGroupInfo extends AppCompatActivity {
             }
         });
 
+        final Button mapView = findViewById(R.id.map_view);
+        mapView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent viewGroup = new Intent(ShowGroupInfo.this, SelectAndSelfMap.class);
+                viewGroup.putExtra("lat", Lat);
+                viewGroup.putExtra("long", Long);
+                ShowGroupInfo.this.startActivity(viewGroup);
+            }
+        });
         final Button delete = findViewById(R.id.delete);
         delete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent deleteGroup = new Intent(ShowGroupInfo.this, DeleteGroup.class);
-                deleteGroup.putExtra("user_ID", userID);
-                deleteGroup.putExtra("name",name);
-                deleteGroup.putExtra("owner",users.get(0));
-
-                //detaials that enable coming back to this page
-                deleteGroup.putExtra("groupID",ID);
-                deleteGroup.putExtra("category",cat);
-                deleteGroup.putExtra("details",dets);
-                deleteGroup.putExtra("userIDs",userIDs);
-                deleteGroup.putExtra("Lat",Lat);
-                deleteGroup.putExtra("Long",Long);
-
-                ShowGroupInfo.this.startActivity(deleteGroup);
+                  Delete delete = new Delete();
+                  delete.execute();
             }
         });
 
@@ -110,6 +109,7 @@ public class ShowGroupInfo extends AppCompatActivity {
                 if (response != null)
                     res.append(response);
             }
+            ownerID = users.get(0);
             Log.e("response:", res.toString());
             return res.toString();
         }
@@ -212,6 +212,44 @@ public class ShowGroupInfo extends AppCompatActivity {
 
         }
     }
-}
+
+    private class Delete extends AsyncTask<Void, Integer, String> {
+
+        protected String doInBackground(Void... params) {
+
+            if(!ownerID.equals(userID))
+                return "You don't have permission to delete this group";
+
+            else{
+                String url = "http://null-pointers.herokuapp.com/group/?group=" + name +"&id="+userID;
+                String response;
+                HttpClient http = new HttpClient(url,"DELETE");
+                response = http.sendRequest("");
+                if(response.contains("Group Deleted"))
+                    return "Group successfully deleted";
+                else
+                    return "The group you are trying to delete was not found";
+
+            }
+        }
+        protected void onProgressUpdate(Integer...params){
+            super.onProgressUpdate();
+        }
+
+        protected void onPostExecute(String result) {
+
+            Toast.makeText(ShowGroupInfo.this, result,
+                    Toast.LENGTH_LONG).show();
+
+            if (result.equals("Group successfully deleted")) {
+                Intent viewGroup = new Intent(ShowGroupInfo.this, ViewGroup.class);
+                viewGroup.putExtra("user_ID", userID);
+                ShowGroupInfo.this.startActivity(viewGroup);
+            }
+        }
+
+        }
+    }
+
 
 

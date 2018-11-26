@@ -10,13 +10,41 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="9dp"
-        android:layout_marginLeft="9dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginTop="66dp"
+        android:textSize="10sp"
         android:text="@string/go_back" />
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="85dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="66dp"
+        android:text="@string/delete_group"
+        android:textSize="10sp"/>
+
+    <Button
+        android:id="@+id/map_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="180dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="66dp"
+        android:text="View On Map"
+        android:textSize="10sp" />
+
     <TextView
         android:id="@+id/group_info"
-        android:textSize="16dip"
+        android:textSize="16sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="24dp"
@@ -31,16 +59,8 @@
         android:layout_alignParentStart="true"
         android:layout_below="@id/group_info"
         android:layout_alignParentLeft="true"
-        android:layout_alignLeft= "@id/group_info"/>
+        android:layout_alignLeft= "@id/group_info"
+        android:layout_alignStart="@id/group_info" />
 
-    <Button
-        android:id="@+id/delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/list_view"
-        android:layout_marginLeft="9dp"
-        android:text="DELETE GROUP" />
 
 </RelativeLayout>

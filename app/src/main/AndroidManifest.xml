@@ -63,19 +63,22 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAOXSgOiad4uqN_E0a_YZyt-9jOZK5SFlU" />
+            android:value="AIzaSyAOXSgOiad4uqN_E0a_YZyt-9jOZK5SFlU"
+            />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
 
         <service android:name=".Service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <service android:name=".Service.LocationService"
-                  android:enabled="true" />
+        <service
+            android:name=".Service.LocationService"
+            android:enabled="true" />
 
         <activity
-
             android:name=".SelectAndSelfMap"
             android:exported="true"
             android:label="@string/title_activity_select_and_self_map" />
@@ -85,7 +88,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ReportUser" />
         <activity android:name=".DeleteGroup" />
-        <activity android:name=".SearchCategories"></activity>
+        <activity android:name=".SearchCategories" />
     </application>
 
 </manifest>

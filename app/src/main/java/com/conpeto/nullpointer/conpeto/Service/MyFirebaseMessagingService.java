@@ -1,5 +1,6 @@
 package com.conpeto.nullpointer.conpeto.Service;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -27,6 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,15 +48,17 @@ public class MyFirebaseMessagingService  extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
-        // Check if message contains a data payload.
-        // if (remoteMessage.getData().size() > 0) { todo: need to uncomment this line later
-        if (remoteMessage.getNotification().getBody() != null) {
+
+     String messageData = remoteMessage.getData().toString().substring(9,remoteMessage.getData().toString().length()-1);
+
+        Log.d(TAG + "extracted data", messageData);
+        if (remoteMessage != null && remoteMessage.getData()!=null) {
             Log.d(TAG, "New message received from the firebase!");
-            Log.d(TAG, "New message title is" + remoteMessage.getNotification().getTitle());
-            Log.d(TAG, "Message data is" + remoteMessage.getNotification().getBody());
+            Log.d("Message is ", remoteMessage.getData().toString());
+
 
             if (LocationService.getLocation().equals(null)) {
+                Log.d(TAG, "Location service unavailable!");
                 return;
             }
 
@@ -63,39 +67,46 @@ public class MyFirebaseMessagingService  extends FirebaseMessagingService {
                 double log;
                 double lat;
                 JSONObject jsonBody;
-
-                String title = "A new group!";
-                jsonBody = new JSONObject(remoteMessage.getNotification().getBody());
-                log = (double) jsonBody.get("group_longitude");
-                lat = (double) jsonBody.get("group_latitude");
+                 Log.d(TAG,"Building JSON");
+                jsonBody = new JSONObject(messageData);
+                log =  jsonBody.getDouble("group_longitude");
+                lat =  jsonBody.getDouble("group_latitude");
                 Location groupLoc = new Location("");
                 groupLoc.setLatitude(lat);
                 groupLoc.setLongitude(log);
                 Location currentLoc = LocationService.getLocation();
                 float distance = currentLoc.distanceTo(groupLoc) / 1000;
-                Log.d("Distance is: ", Float.toString(distance));
+                JSONArray userList = jsonBody.getJSONArray("user_ids");
+
+                String creator = (String)userList.get(0);
                 String groupName = jsonBody.getString("group");
-                ;
                 String groupCategory = jsonBody.getString("group_category");
                 String groupDetails = jsonBody.getString("group_details");
-                String messageBody = "Group" + " " + groupName + " about " + groupCategory +
-                        " has just been created! " + "see details: " + groupDetails;
+                String messageBody = groupCategory +
+                        " details: " + groupDetails;
+                String title = "A new group: " + groupName;
+
+                if(creator.contains(AccessToken.getCurrentAccessToken().getUserId())){
+                    return;
+                }
 
                 if (PostLogin.gerRadius().equals("Any")) {
                     sendNotification(messageBody, title);
                 } else if (distance <= Float.parseFloat(PostLogin.gerRadius())) {
+                     Log.d(TAG, "Building Notification!");
                     sendNotification(messageBody, title);
+
                 }
 
-            } catch (JSONException e) {
+            } catch (JSONException e) { Log.d(TAG,"JSON exception");
             }
             ;
 
             //}
 
         }
-    }
 
+    }
     /**
      * Create and show a simple notification containing the received FCM message.
      *
@@ -119,7 +130,13 @@ public class MyFirebaseMessagingService  extends FirebaseMessagingService {
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+           Log.d("Firebase higer"," So now what?");
+        }
+
         notificationManager.notify(0, notificationBuilder.build());
+
     }
 
     /**
