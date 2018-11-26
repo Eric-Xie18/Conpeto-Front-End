@@ -30,5 +30,7 @@
     <string name="delete_group">DELETE GROUP</string>
     <string name="title_activity_create_same_group">CreateSameGroup</string>
     <string name="default_notification_channel_id">default</string>
+    <string name="join_group">JOIN GROUP</string>
+    <string name="view_map">View Map</string>
 
 </resources>

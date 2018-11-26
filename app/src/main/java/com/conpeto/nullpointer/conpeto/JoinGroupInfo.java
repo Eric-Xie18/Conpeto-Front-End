@@ -48,6 +48,16 @@ public class JoinGroupInfo extends AppCompatActivity {
         dets = getIntent().getStringExtra("details");
         userIDs = getIntent().getStringExtra("userIDs");
 
+        final Button viewMap =  findViewById(R.id.view_map_2);
+        viewMap.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent map = new Intent(JoinGroupInfo.this, SelectAndSelfMap.class);
+                map.putExtra("long", Long);
+                map.putExtra("lat",Lat);
+                JoinGroupInfo.this.startActivity(map);
+            }
+        });
+
         final Button goBack = findViewById(R.id.go_Back);
         goBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -176,10 +186,32 @@ public class JoinGroupInfo extends AppCompatActivity {
 
                 Toast.makeText(JoinGroupInfo.this, "Joined the group successfully!",
                         Toast.LENGTH_LONG).show();
+                Intent prev = new Intent(JoinGroupInfo.this, GroupList.class);
+                //user ID
+                prev.putExtra("user_ID", userID);
+                prev.putExtra("userLat", userLat);
+                prev.putExtra("userLong", userLong);
+                prev.putExtra("radius", radius);
+                prev.putExtra("userCat", userCat);
+
+                JoinGroupInfo.this.startActivity(prev);
                 }
 
             }
         }
+
+        @Override
+     public void onBackPressed(){
+            Intent prev = new Intent(JoinGroupInfo.this, GroupList.class);
+            //user ID
+            prev.putExtra("user_ID", userID);
+            prev.putExtra("userLat", userLat);
+            prev.putExtra("userLong", userLong);
+            prev.putExtra("radius", radius);
+            prev.putExtra("userCat", userCat);
+
+            JoinGroupInfo.this.startActivity(prev);
+            }
 
 }
 

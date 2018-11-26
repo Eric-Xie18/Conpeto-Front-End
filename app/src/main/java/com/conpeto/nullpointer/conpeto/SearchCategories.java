@@ -196,4 +196,12 @@ public class SearchCategories extends AppCompatActivity {
         });
 
     }
+    @Override
+    public void onBackPressed() {
+            Intent postlogin = new Intent(SearchCategories.this, PostLogin.class);
+            postlogin.putExtra("user_ID", userID);
+            SearchCategories.this.startActivity(postlogin);
+            finish();
+        }
+
 }

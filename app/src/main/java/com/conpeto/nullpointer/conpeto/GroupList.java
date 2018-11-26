@@ -288,6 +288,13 @@ public class GroupList extends AppCompatActivity {
 
         }
     }
+    @Override
+    public void onBackPressed(){
+        Intent postLogin = new Intent(GroupList.this, SearchCategories.class);
+        postLogin.putExtra("user_ID", userID);
+        GroupList.this.startActivity(postLogin);
+
+    }
 }
 
 

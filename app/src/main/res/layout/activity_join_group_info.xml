@@ -16,7 +16,7 @@
         android:text="@string/go_back" />
     <TextView
         android:id="@+id/group_info"
-        android:textSize="16dip"
+        android:textSize="16sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="24dp"
@@ -34,7 +34,8 @@
         android:layout_alignParentLeft="true"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
-        android:layout_marginTop="-1dp" />
+        android:layout_marginTop="-1dp"
+        android:layout_alignStart="@id/group_info" />
 
     <Button
         android:id="@+id/join"
@@ -43,9 +44,25 @@
         android:layout_alignTop="@+id/go_Back"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginStart="184dp"
-        android:layout_marginLeft="184dp"
+        android:layout_marginStart="115dp"
+        android:layout_marginLeft="129dp"
+        android:layout_marginTop="3dp"
+        android:layout_toEndOf="@id/go_Back"
         android:layout_toRightOf="@id/go_Back"
-        android:text="JOIN GROUP" />
+        android:text="@string/join_group" />
+
+    <Button
+        android:id="@+id/view_map_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/go_Back"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft ="170dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:text="@string/view_map"
+        android:layout_marginStart="170dp" />
 
 </RelativeLayout>
