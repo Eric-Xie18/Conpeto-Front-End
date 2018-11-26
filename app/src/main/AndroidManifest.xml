@@ -70,12 +70,11 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <service android:name=".Service.LocationService"
-                  android:enabled="true" />
+        <service
+            android:name=".Service.LocationService"
+            android:enabled="true" />
 
         <activity
-
             android:name=".SelectAndSelfMap"
             android:exported="true"
             android:label="@string/title_activity_select_and_self_map" />
@@ -85,7 +84,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ReportUser" />
         <activity android:name=".DeleteGroup" />
-        <activity android:name=".SearchCategories"></activity>
+        <activity android:name=".SearchCategories" />
+        <activity
+            android:name=".GroupList"
+            android:label="@string/title_activity_group_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".JoinGroupInfo"></activity>
     </application>
 
 </manifest>

@@ -128,4 +128,12 @@ public class LocationService extends Service implements
         return latestLocation;
     }
 
+    public static boolean checkifnull(){
+        if (latestLocation==null)
+            return true;
+        else
+            return false;
+    }
+
+
 }

@@ -126,7 +126,7 @@ private boolean getKey = false;
 
         bJoinGroup.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent searchGroup = new Intent(PostLogin.this,JoinGroup.class);
+                Intent searchGroup = new Intent(PostLogin.this,SearchCategories.class);
                 searchGroup.putExtra("user_ID",getIntent().getStringExtra("user_ID"));
                 PostLogin.this.startActivity(searchGroup);
             }
