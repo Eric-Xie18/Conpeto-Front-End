@@ -210,7 +210,7 @@ public class GroupList extends AppCompatActivity {
             for (int j = 0; j < result.size(); j++) {
                 GroupNames.add(result.get(j).getName());
             }
-
+            if(!result.isEmpty()){
             lv = (ListView) findViewById(R.id.list_view);
             adapter = new ArrayAdapter<String>(GroupList.this, R.layout.list_item, R.id.name, GroupNames);
             lv.setAdapter(adapter);
@@ -239,7 +239,13 @@ public class GroupList extends AppCompatActivity {
 
                     GroupList.this.startActivity(next);
                 }
-            });
+            });}
+            else {
+                GroupNames.add("No Groups Found");
+                lv = (ListView) findViewById(R.id.list_view);
+                adapter = new ArrayAdapter<String>(GroupList.this, R.layout.list_item, R.id.name, GroupNames);
+                lv.setAdapter(adapter);
+            }
 
         }
     }
