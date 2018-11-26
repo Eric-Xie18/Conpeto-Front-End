@@ -83,7 +83,8 @@ public class GroupList extends AppCompatActivity {
                 Log.e("catLoghere22",catlocgroups);
             }
             else if(Category.equals("All")&& !radius.equals("Any")){
-                urlBuilder2.append("longitude=");
+                urlBuilder2.append("category=Sport");
+                urlBuilder2.append("&longitude=");
                 urlBuilder2.append(Long);
                 urlBuilder2.append("&latitude=");
                 urlBuilder2.append(Lat);
@@ -91,7 +92,14 @@ public class GroupList extends AppCompatActivity {
                 urlBuilder2.append(radius);
                 String url2 = urlBuilder2.toString();
                 HttpClient http2 = new HttpClient(url2, "GET");
-                catlocgroups = http2.sendRequest("");
+                String catlocgroups1 = http2.sendRequest("");
+                String url3 = "http://null-pointers.herokuapp.com/group/?category=Music and Arts&longitude="+Long +"&latitude="+Lat+"&distance="+radius;
+                http2 = new HttpClient(url3, "GET");
+                String catlocgroups2 = http2.sendRequest("");
+                String url4 = "http://null-pointers.herokuapp.com/group/?category=Food and Conversation&longitude="+Long +"&latitude="+Lat+"&distance="+radius;
+                http2 = new HttpClient(url4, "GET");
+                String catlocgroups3 = http2.sendRequest("");
+                catlocgroups = catlocgroups1 + catlocgroups2 + catlocgroups3;
                 Log.e("catLog",catlocgroups);
             }
             else{
@@ -202,6 +210,7 @@ public class GroupList extends AppCompatActivity {
 
         protected void onPostExecute(ArrayList<Group> result) {
 
+            if(!result.isEmpty()){
             ListView lv;
             ArrayAdapter<String> adapter;
             final ArrayList<Group> Final = new ArrayList<>(result);
@@ -210,7 +219,7 @@ public class GroupList extends AppCompatActivity {
             for (int j = 0; j < result.size(); j++) {
                 GroupNames.add(result.get(j).getName());
             }
-            if(!result.isEmpty()){
+
             lv = (ListView) findViewById(R.id.list_view);
             adapter = new ArrayAdapter<String>(GroupList.this, R.layout.list_item, R.id.name, GroupNames);
             lv.setAdapter(adapter);
@@ -241,6 +250,9 @@ public class GroupList extends AppCompatActivity {
                 }
             });}
             else {
+                ArrayList<String> GroupNames = new ArrayList<>();
+                ListView lv;
+                ArrayAdapter<String> adapter;
                 GroupNames.add("No Groups Found");
                 lv = (ListView) findViewById(R.id.list_view);
                 adapter = new ArrayAdapter<String>(GroupList.this, R.layout.list_item, R.id.name, GroupNames);
