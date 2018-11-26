@@ -39,23 +39,12 @@ public class ReportUser extends AppCompatActivity {
         final Button goBack = findViewById(R.id.go_Back);
         goBack.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent showGroupInfo= new Intent(ReportUser.this, ShowGroupInfo.class);
+                Report report = new Report();
+                report.execute();
 
-                showGroupInfo.putExtra("name",name);
-                showGroupInfo.putExtra("groupID",ID);
-                showGroupInfo.putExtra("category",cat);
-                showGroupInfo.putExtra("details",dets);
-                showGroupInfo.putExtra("userIDs",userIDs);
-                showGroupInfo.putExtra("Lat",Lat);
-                showGroupInfo.putExtra("Long",Long);
-                showGroupInfo.putExtra("user_ID",userID);
-
-                ReportUser.this.startActivity(showGroupInfo);
             }
         });
 
-         Report report = new Report();
-         report.execute();
 
     }
 
@@ -82,15 +71,29 @@ public class ReportUser extends AppCompatActivity {
             String msg2 = " Sorry the user you are trying to report doesn't exist!";
             String msg3 = "Unknown error occurred";
 
-            TextView message = (TextView) findViewById(R.id.msg);
-            message.setTypeface(null, Typeface.BOLD);
-            if(result.contains("Report Count Updated"))
-                message.setText(msg1);
-            else if(result.contains("User Not Found")||result.contains("User Does Not Exist"))
-                message.setText(msg2);
-            else
-                message.setText(msg3);
 
+            if(result.contains("Report Count Updated"))
+                Toast.makeText(ReportUser.this, msg1,
+                        Toast.LENGTH_LONG).show();
+            else if(result.contains("User Not Found")||result.contains("User Does Not Exist"))
+                Toast.makeText(ReportUser.this, msg2,
+                        Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(ReportUser.this, msg3,
+                        Toast.LENGTH_LONG).show();
+
+
+            Intent showGroupInfo= new Intent(ReportUser.this, ShowGroupInfo.class);
+
+            showGroupInfo.putExtra("name",name);
+            showGroupInfo.putExtra("groupID",ID);
+            showGroupInfo.putExtra("category",cat);
+            showGroupInfo.putExtra("details",dets);
+            showGroupInfo.putExtra("userIDs",userIDs);
+            showGroupInfo.putExtra("Lat",Lat);
+            showGroupInfo.putExtra("Long",Long);
+            showGroupInfo.putExtra("user_ID",userID);
+            ReportUser.this.startActivity(showGroupInfo);
         }
     }
 }

@@ -63,7 +63,11 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAOXSgOiad4uqN_E0a_YZyt-9jOZK5SFlU" />
+            android:value="AIzaSyAOXSgOiad4uqN_E0a_YZyt-9jOZK5SFlU"
+            />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
 
         <service android:name=".Service.MyFirebaseMessagingService">
             <intent-filter>
@@ -85,11 +89,13 @@
         <activity android:name=".ReportUser" />
         <activity android:name=".DeleteGroup" />
         <activity android:name=".SearchCategories" />
+
         <activity
             android:name=".GroupList"
             android:label="@string/title_activity_group_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".JoinGroupInfo"></activity>
+
     </application>
 
 </manifest>
